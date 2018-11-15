@@ -1,1 +1,141 @@
 # Building WebVR with A-Frame
+
+## Questions
+
+* How do I build VR with A-Frame?
+* How do I navigate the A-Frame Documentation?
+* How do I debug A-Frame?
+
+>
+## Overview
+
+## Anatomy of an A-Frame Scene
+
+Let's have a look at an example to get a feel for how an A-Frame scene hangs
+together. 
+
+### Open an A-Frame scene on glitch.com {.exercise}
+
+1. Open this link in your browser: https://glitch.com/edit/#!/pricey-kitten
+1. Click "Remix to Edit" to create a copy of the project in your Glitch account
+1. Click "Show Live" to see what the scene looks like.
+  - Explore the scene briefly. You can use the WASD or arrow keys to move and mouse to change the camera angle.
+1. In the left hand file pane click "index.html" to open the app source.
+
+What is glitch.com? Glitch is a social coding site that makes is easy to
+write and host JS web apps from within your browser. A lot of A-Frame
+introductory examples are hosted there.
+
+### The header
+
+```html
+  <head>
+    <title>Hello, WebVR! - A-Frame</title>
+    <meta name="description" content="Hello, WebVR! - A-Frame">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="spin.js"></script>
+    <script src="https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"></script>   
+  </head>
+```
+
+The header of an A-Frame scene is like a normal html web page. Within it we can
+define the scene title and metadata. Typically an A-Frame scene will have many
+script calls that load JS files. In this case:
+
+* `"https://aframe.io/releases/0.8.0/aframe.min.js"` is the A-Frame framework. Without it there is no VR
+* `"spin.js"` is a local JS file that contains a component called `spin`
+* `"https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"` is a 3rd party component included from a repository.
+
+So this is roughly analogous to declaring all your R packages with
+`library()` calls at the beginning of your script.
+
+### The scene
+
+Everything within the `a-scene` tag defines the items in the scene. There are two zones:
+
+#### The assets block
+
+```html
+<a-assets>
+  <img crossorigin="anonymous" id="hadz" src="https://cdn.glitch.com/aaf7e3b8-f72b-405d-a6dd-b5ba91c32622%2FJT_R_code.gif?1542275718299"></img>
+</a-assets>
+```
+The assets block is where media files are defined that need to be pre-loaded before the scene will be rendered. Each media file in the assets block is assigned an `id` that can be used to reference the asset as many times as required throughout the scene. 
+#### The entities
+
+```html
+<!-- hadley box -->
+<a-box id = "important" position="-1 0.5 -3" rotation="0 45 0" shadow 
+             spin = "axis: y; speed: 1.6" scale="1 1 1"  src="#hadz">
+</a-box>
+      
+<!-- mirrored sphere -->
+<a-sphere position="0 1.0 -4.75" radius="1.25" color="#EF2D5E" shadow 
+          mirror="resolution: 64; interval: 150; distance: 5000; repeat: true"></a-sphere>
+      
+<!-- plain ol' yellow cylinder -->
+<a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D" shadow></a-cylinder>
+      
+<!-- floor -->
+<a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow></a-plane>
+
+<!-- backboard -->
+<a-plane position="0 2 -6" rotation="0 0 0" width="4" height="4" color="#7BC8A4" shadow></a-plane>
+
+<!-- the background colour -->
+<a-sky color="#ECECEC"></a-sky>
+```
+
+The objects that comprise the scene are called **entities**. Here they are
+defined by the tags `a-box`, `a-sphere`, `a-plane` etc. Within the entity tags,
+the attributes define configuration for components. This configuration is
+enclosed in quotes and can contain multiple **properties** e.g.: ` spin = "axis: y; speed: 1.6`.
+
+## Config Conventions
+
+### Coordinate system
+To fully comprehend the scene configuration you need to know the coordinate
+system. In VR, The standard unit is meters, which are scaled in VR space to
+look like meters in real space.
+
+In the coordinate system X points "right", Y points "up", and Z points toward the camera. Like so:
+
+```
+          | Y + 
+          | 
+          |_ _ X +
+         / 
+        / 
+      Z +
+```
+
+This can be confusing when using spatial data since the spatial convention is
+typically to have Z pointing "up from the table" and Y pointing "up the page"
+
+
+### Vectors
+Vectors of X,Y,Z are written as space delimited triples like so:
+  * `position="-1 0.5 -4"`
+  * `rotation="-90 0 0"`
+  
+In the case of rotation the each vector component specifies degrees rotation clockwise about an entity's axis.
+
+### Applying Rotation {.exercise}
+The green floor has a rotation of `-90 0 0`. 
+
+1. Locate it in the entity configuration.
+1. Try subbing in large and small, positive and negative values for `-90` and viewing the results.
+1. Which axis is the rotation around?
+1. Where is this axis of rotation on the floor entity?
+
+### Camera Position
+Unless otherwise specified the camera as placed at the origin, looking in the
+negative direction on the Z axis.
+
+Camera position and angle can be configured by adding an `a-camera` entity to
+the scene.
+
+## Tweaking a scene {.exercise}
+1. Insert a camera. 
+
+
