@@ -1,0 +1,210 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+library(rgl)
+library(dplyr)
+library(raster)
+library(scales)
+library(sf)
+library(sfdct)
+library(silicate)
+library(tidyr)
+library(viridis)
+
+setupKnitr()
+#knitr::knit_hooks$set(webgl = rgl::hook_webgl)
+
+```
+
+# What is a mesh? 
+
+Key ideas!  
+
+* **Topology** is the *shape* of things and their relationships.  
+* **Geometry** is the *where* of things. 
+* **Indexing** is the link between topology and geometry. 
+
+*Traditional spatial data tends to confuse topology and geometry.*  
+
+## Topology vs. geometry
+
+
+This line has **1-dimensional topology** and is expressed in **3-dimensional geometry**. 
+
+```{r}
+rgl.clear()
+library(rgl)
+(geometry <- cbind(x = c(0, 0, 0.5), y = c(0, 1, 0), z = c(0, 1, 0.8)))
+(topology1 <- rbind(.v0 = c(1, 2), .v1 = c(2, 3)))
+lines3d(geometry[t(topology1), ], lwd = 3, col = "firebrick")
+axis3d("x")
+axis3d("y")
+axis3d("z")
+rglwidget()
+```
+
+This triangle has **2-dimensional topology** and is depicted in **3-dimensional geometry**. 
+
+```{r}
+(topology2 <- rbind(.v0 = c(1, 2, 1), .v1 = c(2, 3, 1)))
+triangles3d(geometry[t(topology2), ], col = "firebrick")
+rglwidget()
+```
+
+
+## What is a raster?
+
+A layer of neighbouring rectangles? 
+
+```{r what-raster, echo=FALSE}
+## What is a raster? 
+m <- matrix(c(seq(0, 0.5, length = 5), 
+            seq(0.375, 0, length = 4)), 3)
+
+colpal <- function(n = 26, drop = 5) sf::sf.colors(n)[-seq_len(drop)]
+plot_values <- function(x) {
+  plot(x, axes = FALSE, main = "value", box = FALSE, col = colpal()); 
+  text(coordinates(x), label = values(x))
+  plot(extent(x), add = TRUE)
+}
+plot_cells <- function(x) {
+  plot(x, axes = FALSE, main = "cell", legend = FALSE, box = FALSE, col = colpal()); 
+  plot(extent(x), add = TRUE)
+  text(coordinates(x), label = sprintf("[%i]", seq_len(ncell(x))), cex = 0.8)
+}
+r <- setExtent(raster(m), extent(0, ncol(m), 0, nrow(m)))
+op <- par(mfcol = c(1, 2))
+plot_values(raster(m))
+plot_cells(raster(m))
+par(op)
+```
+
+
+Or a continuous fields between points?  (Lots of ways to infer the field, including this very poor one). 
+
+
+```{r what-raster-2, echo=FALSE}
+plot_edges <- function(x, main = "") {
+  sc <- silicate::SC(spex::polygonize(x))
+  e <- silicate::sc_edge(sc)
+  v <- silicate::sc_vertex(sc)
+  x0 <- e %>% dplyr::inner_join(v, c(".vx0" = "vertex_"))
+  x1 <- e %>% dplyr::inner_join(v, c(".vx1" = "vertex_"))
+  plot(rbind(x0, x1)[c("x_", "y_")], asp = 1, type = "n", 
+       axes = FALSE, xlab = "", ylab = "", main = main)
+  graphics::segments(x0$x_, x0$y_, x1$x_, x1$y_, lty = 2)
+}
+op <- par(mfcol = c(1, 2))
+plot_edges(r, main = "points")
+points(coordinates(r), col = colpal(10, drop = 1)[scales::rescale(values(r), c(1, 9))], pch = 19, cex = 1.5)
+plot_edges(r, main = "field?")
+rr <- setExtent(disaggregate(r, fact = 12, method = "bilinear"), extent(0.5, ncol(r) - 0.5, 0.5, nrow(r) - 0.5))
+
+points(coordinates(rr), 
+       col = colpal(10, drop = 1)[scales::rescale(values(rr), c(1, 9))],
+       pch = 19, cex = 0.65)
+points(coordinates(r), col = "black", bg = colpal(10, drop = 1)[scales::rescale(values(r), c(1, 9))], pch = 21, cex = 1.5)
+
+par(op)
+
+```
+
+
+# What is a polygon? 
+
+A series of grouped *paths*?
+
+```{r, echo=FALSE}
+
+library(silicate)
+mmcol <- viridis::viridis(2)
+mm <- sf::as_Spatial(minimal_mesh)
+par(mfcol = c(1, 2))
+plot(mm, main = "two polygons", col = mmcol)
+plot(mm, border = "transparent", main = "three paths")
+sc <- silicate::SC0(mm)
+o <- tidyr::unnest(sc$object[2:1, ]) ## flip so purple on top
+x0 <- sc$vertex[o$.vx0, ]
+x1 <- sc$vertex[o$.vx1, ]
+for (i in seq_len(nrow(x0))) {  ## sigh
+  arrows(x0$x_[i], x0$y_[i], x1$x_[i], x1$y_[i], col = mmcol[o$a[i]], lwd = 2, length = 0.1, angle = c(30, 15)[o$a[i]])
+}
+```
+
+What's in the middle? 
+
+```{r, echo=FALSE}
+w <- options(warn =-1)
+tri <- sf::st_cast(sfdct::ct_triangulate(minimal_mesh, a = 0.01, D = TRUE))
+options(w)
+## repeat previous plot
+par(mfcol = c(1, 2))
+plot(mm, main = "two polygons", col = mmcol)
+plot(mm, border = "transparent", main = "what is the fill?")
+sc <- silicate::SC0(mm)
+o <- tidyr::unnest(sc$object[2:1, ]) ## flip so purple on top
+x0 <- sc$vertex[o$.vx0, ]
+x1 <- sc$vertex[o$.vx1, ]
+for (i in seq_len(nrow(x0))) {  ## sigh
+  arrows(x0$x_[i], x0$y_[i], x1$x_[i], x1$y_[i], col = mmcol[o$a[i]], lwd = 2, length = 0.1, angle = c(30, 15)[o$a[i]])
+}
+
+coords <- sf::st_coordinates(sf::st_centroid(tri))
+text(coords, label = "?", cex = 0.7)
+#text(0.35, 0.35, "just\n a hole!", cex = 0.5)
+```
+
+The *fill* we see in traditional 2D graphics is a **trick!!**. 
+
+Search: 
+
+> it's not what you draw it's what you not draw ~Paul Murrell
+
+Technically the trick comes in two types, either the *even-odd* or *winding* rule, and this trick is not part of this workshop. Where it does matter is for the concept of *orientation*, and 3D graphics do care about the direction that triangles are wound (consider that reversing the direction is like flipping the triangle in place in terms of how algorithms behave ...). 
+
+
+
+# What's the fill? 
+
+In 2D graphics there is no fill, there's a trick that the graphics engine uses to draw a pixel if it has been encircled an even or odd number of times, or rule about in which direction it was encircled. It happens deep in the graphics. 
+
+In 3D, and to fill our polygons properly *as data* we need **primitives**. 
+
+
+
+# Primitives
+
+Terminology alert!  (This is *a working definition* of primitive, not everyone agrees.) 
+
+* Point - a single coordinate is a 0-dimensional primitive (vertex, coordinate)
+* Line  - a line segment between two coordinates is a 1-dimensional primitive (edge, segment)
+* Triangle - a triangle joining three coordinates is 2-dimensional primitive 
+
+
+Topology ain't geometry 
+
+(This is *topological* dimension. Every one of these types of shape can exist in 1, 2, 3, or dimensional *geometry*. )
+
+To fill our polygon we need triangles. 
+
+```{r}
+plot(tri)
+```
+
+Note that if we turn off the border, we don't notice the difference. 
+
+```{r}
+plot(tri, border = NA)
+```
+
+No tricky winding or even-odd rule to worry about, but we have lost our boundary around each distinct shape - we could find them by finding edges within a shape that are not shared by two triangles ...
+
+
+
+
+

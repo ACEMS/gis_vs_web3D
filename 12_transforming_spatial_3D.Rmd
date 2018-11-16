@@ -1,0 +1,24 @@
+# Transforming Spatial Data using modular 3D tools
+
+This is hard! There's a few scattered tools. 
+
+## On CRAN 
+
+mesh3d in rgl
+
+sfdct to triangulate simple features
+
+quadmesh to create rgl-ready mesh3d
+
+decido to triangulate simple features (only suitable for plane-filling, because ugly triangles)
+
+## Stuff not on CRAN!
+
+hypertidy/silicate, hypertidy/anglr - these are evolving together 
+
+MilesMcBain/r2vr, MilesMcBain/r2vr.gis
+
+SymbolixAU/mapdeck
+
+coolbutuseless/threed
+
