@@ -78,3 +78,27 @@ things move on a pre-programmed path, and also complex, like making an object be
 
 This flexible approach is called 'Entity-Component Architecture'. We'll be
 discussing it further as we dive into A-Frame.
+
+## The A-Frame Stack
+
+The A-Framework is built on top of a JS 3D visualisation framework called
+[three.js](https://threejs.org/). three.js itself builds on top of the WebGL API
+meaning the stack looks like this:
+
+```
+     ----------
+    | A-Frame  |
+    |          |
+     -----------
+    | three.js |
+    |          |
+     ----------
+    | WebGL    |
+    |          |
+     ----------
+```
+
+The abstraction is leaky in the sense that there are some things that can only
+be achieved with knowledge of the lower level frameworks. When we place R on top
+of that stack the same thing remains true, that is why we are spending time
+building knowledge of A-Frame.
