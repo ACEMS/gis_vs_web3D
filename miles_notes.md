@@ -30,9 +30,16 @@
 
 # WebVR
 
-# Building VR with A-Frame
+# A-Frame Scene Concepts
 
-# Using Community Content
+# Developing with A-Frame 
+* A-Frame inspector
+* Chrome devtools
+* serving your scene
+* nested entities
+* interactivity
+* Third party components
+*  Using Community Content
 
 # Links
 Other rstats aframe pkg: https://github.com/JohnCoene/aframer
