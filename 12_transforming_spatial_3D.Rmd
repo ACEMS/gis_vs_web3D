@@ -12,6 +12,8 @@ quadmesh to create rgl-ready mesh3d
 
 decido to triangulate simple features (only suitable for plane-filling, because ugly triangles)
 
+mapview::cubeView 
+
 ## Stuff not on CRAN!
 
 hypertidy/silicate, hypertidy/anglr - these are evolving together 

@@ -21,6 +21,12 @@ setupKnitr()
 
 ```
 
+# Questions
+
+* What are meshes and topology?  
+* what is the relationship of meshes to geospatial raster/vector data?
+
+
 # What is a mesh? 
 
 Key ideas!  
@@ -204,6 +210,166 @@ plot(tri, border = NA)
 
 No tricky winding or even-odd rule to worry about, but we have lost our boundary around each distinct shape - we could find them by finding edges within a shape that are not shared by two triangles ...
 
+
+# the rgl mesh3d format
+
+Rgl is the OpenGL package in R. 
+
+A classic **computer graphics** data model called *mesh3d*, it's not widely used but is very powerful. You can visualize an mesh3d with `shade3d()`, all the aesthetics, material properties, geometry and topology are present in the model with some control allowed by the shade3d function. 
+
+It supports two kinds of primitives **quads** and **triangles**. 
+
+Quads are a funny case, usually carried by two triangles (at least implicitly) but they are an important computer graphics element. 
+
+
+## WIP - Mesh3d gory details 
+
+**trim out this section, it's taken from the quadmesh vignette, and integrate the final rgl plot better** 
+
+
+The simplest kind of mesh is a basic raster. Consider the matrix above.  
+
+```{r}
+(m)
+```
+
+On its own this matrix has absolutely nothing to do with spatial data, it is literally a collection of 9 numeric values in a given order, and by the magic of programming we've nominated a shape of 3x3. We can't help but think about this shape spatially however, but there's a problem. Does each element occupy space or should we consider them to be infinitesimal locations? 
+
+R provides either interpretation (to simplify this story we nominate locations for the rows and columns explicitly).  
+
+When considered as an image, each matrix element occupies a certain space in width and height,  but when considered as a point set the numbers simply float at the given locations. Which is correct? (Spoiler: Both are correct, it simply depends what we are doing.) 
+
+```{r}
+x <- seq(1, nrow(m)) - 0.5
+y <- seq(1, ncol(m)) - 0.5
+image(x, y, m)
+text(expand.grid(x, y), lab = m[])
+```
+
+The raster package defaults to the image interpretation and helpfully assumes the values are nominally at the centre points as shown above. We have to nominate the extent or we end up in 0,1 range, we also have to invert the order of the values because raster counts from the top of the page and R's matrix uses [column-major order](https://CRAN.R-project.org/package=reticulate/vignettes/arrays.html).
+
+```{r}
+library(raster)
+(r <- raster(t(m[, ncol(m):1]), xmn = 0, xmx =ncol(m), ymn = 0, ymx = nrow(m)))
+```
+
+
+R's image and rasters in general are so efficient because they only store this minimal amount of information: the actual data values, and the extent and dimensions of the space they occur in. If we had to store the centre coordinate of every cell, or worse the corner coordinates then the data storage goes up dramatically. Every software that deals well with these kinds of data has to treat these coordinates as implicit.  We can easily expand the centre coordinates. 
+
+
+```{r}
+xyz <- as.data.frame(r, xy = TRUE)
+head(xyz)
+tail(xyz)
+```
+
+but to expand the corners we have to jump through some hoops and even then we get *every instance* of the corners, not only for each cell but to explicitly close the cell as a polygon. 
+
+```{r}
+as(as(raster::rasterToPolygons(r), "SpatialLinesDataFrame"), 
+   "SpatialPointsDataFrame")
+```
+
+There are only 20 unique coordinates at the corners, which is where quadmesh comes in. 
+
+```{r}
+library(quadmesh)
+qm <- quadmesh(r)
+str(qm)
+```
+
+
+This is a mysterious seeming data structure, it is the mesh3d type of the 'rgl' package, rarely seen in the wild. 
+
+The structure is `vb`, the coordinates of the mesh - these are the
+actual corner coordinates from the input raster.  
+
+```{r}
+image(r)
+op <- par(xpd = NA)
+text(t(qm$vb), lab = 1:20)
+par(op)
+```
+
+
+Notice how these are unique coordinates, there's no simple relationship between the cell and its value and its four corners. This is because they are shared between neighbouring cells. The relationship is stored in the `ib` array, this has four rows one for each corner of each cell. There are 12 cells and each has four coordinates from the shared vertex pool. The cells are defined in the order they occur in raster. 
+
+```{r}
+qm$ib
+```
+
+It works directly with rgl function, and can be used in more raw form. 
+
+
+```{r}
+rgl.clear()
+library(rgl)
+shade3d(qm)
+rglwidget()
+rgl.clear()
+quads3d(t(qm$vb)[qm$ib,])
+rglwidget()
+```
+
+
+
+**Better code than above**
+
+```{r}
+
+
+# two ways to think about raster data
+library(sf)
+p <- spex::polygonize(r)
+p$color_ <- colourvalues::colour_values(p$layer,  palette = t(col2rgb(palr::bathyDeepPal(10))))
+plot(st_geometry(p), col = p$color_)
+
+library(rgl)
+library(anglr)
+library(silicate)
+library(quadmesh)
+tri <- copy_down(TRI(spex::polygonize(disaggregate(r, 4))), "layer")
+tri$object$color_ <- colourvalues::colour_values(tri$object$layer)
+tmp <- plot3d(tri)
+rgl.pop()
+rgl.clear()
+shade3d(tmp, alpha = 0.5, specular = "black", col = "grey")
+wire3d(tmp, col = "black", lwd = 2)
+rgl::aspect3d(1, 1, .2)
+bg3d("lightgrey")
+# 
+qm <- quadmesh::quadmesh(r)
+#tm <- qm
+#tm$it <- quadmesh::triangulate_quads(qm$ib)
+#tm$ib <- NULL
+#tm$primitivetype <- "triangle"
+
+## the point of this part is to show the quads don't carry the z information well (it's ok with very fine quads)
+rgl::wire3d(qm, lwd = 8, col = "green")
+
+ptri <- geometry::delaunayn(coordinates(r))
+t3d <- structure(list(vb = t(cbind(coordinates(r), values(r), 1)), it = t(ptri), 
+            primitivetype = "triangle", material = list()), normals = NULL, texcoords = NULL,  
+            class = c("mesh3d", "shape3d"))
+
+rgl::wire3d(t3d, lwd = 10, col = "black")
+rgl::rglwidget()
+```
+The primary means to create this format from a raster is for 3D plotting, but because we have access to the coordinate directly it provides other uses. We can transform the coordinates (i.e. a map projection) or manipulate them and augment the Z value (for example) in flexible ways. 
+
+(The usual way of driving rgl grid surfaces is `rgl.surface` but this is limited to the centre-point interpretation only - more than the x, y, z list interface as image() is, i.e. it can take an individual x,y pair for every cell, but it cannot properly represent the cell-as-area as image can. For this we need to use `shade3d`, and actual `meshd3d` types in `rgl`). 
+
+
+
+
+
+
+
+## rgl miscellanea
+
+Most examples around use `rgl.surface`, but I am less familiar with that. The `thing3d` are the higher-level functions in rgl, and the `rgl.thing` functions are lower-level (recommended not to mix them in usage). 
+
+**rayshader** in particular, has extremely compelling outputs, but it uses the lower level `rgl.surface` and doesn't maintain the geographic coordinates, so I see it mostly as a texture-generator (but watch its development!). 
 
 
 
