@@ -215,7 +215,7 @@ No tricky winding or even-odd rule to worry about, but we have lost our boundary
 
 Rgl is the OpenGL package in R. 
 
-A classic **computer graphics** data model called *mesh3d*, it's not widely used but is very powerful. You can visualize an mesh3d with `shade3d()`, all the aesthetics, material properties, geometry and topology are present in the model with some control allowed by the shade3d function. 
+A classic **computer graphics** data model called *mesh3d*, it's not widely used but is very powerful. You can visualize a mesh3d with `shade3d()`, all the aesthetics, material properties, geometry and topology are present in the model with some control allowed by the shade3d function. 
 
 It supports two kinds of primitives **quads** and **triangles**. 
 
