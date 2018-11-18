@@ -26,6 +26,9 @@ This is hard! There's a few scattered tools.
 * `mapview::cubeView` does very compelling interactive raster-cube visualization
 
 
+
+Side note: there are many triangulation algorithms and many packages in R, but we need *constrained triangulation* to preserve all input edges - only a handful can do that, and RTriangle is the king (with a problematic license). 
+
 Quadmesh. 
 
 
