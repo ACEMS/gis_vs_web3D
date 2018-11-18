@@ -1,0 +1,275 @@
+# Spatial Data to VR via R
+
+* How do I create an A-Frame scene with R?
+* What kinds of data can we represent in A-Frame?
+* How do I render spatial data in VR?
+
+## Motivation
+
+So now you've had a taste of the A-Frame framework and marshalling spatial data to 3D in R
+you're in better position to undstand why defining VR scenes from R is a
+beneficial thing. Before this capability existed the workflow for VR scenes was roughly this:
+
+Repeat until 'done':
+
+1. Build 3D models and JSON data in R for export to VR
+1. Define VR in HTML/JS
+1. Serve scene
+1. Discover limitation or bug
+
+The process is naturally iterative but the speed of iteration is frustratingly
+slow due to context switching from the R environment to Web environment. It also
+leads to a nasty anti-pattern where data names and calculation results from
+R make their way into web land as magical constants, slowing the process
+even further when these need to change.
+
+## R to VR
+
+The tools that exist in R allow you to mix R code with the VR abstraction
+provided by A-Frame. They do not provide a higher level abstraction. To use an R
+analogy:
+
+`grid` is a low level graphics framework that gives you the power to draw
+anything you can imagine using 2D geometric primitives. It is up to you write
+functions that map your data to those primitives. `ggplot2` is a popular
+visualisation package that does exactly this.
+
+If you're using VR tools in R you're going to be working with low level VR
+primitives. Do not expect `ggplot2` level magic. A typical scene will be hundreds
+of lines of code, as opposed to say tens with `ggplot2`. The saving grace is
+that most of those lines of code will be about declaring simple primitive
+objects and interactions which are not overly complex.
+
+This is a natural situation since the domain of VR visualisations is not well
+understood right now. Through working with VR you will begin to see the common
+tasks important to your domain and if we're lucky you might even write a package
+to help others do them.
+
+There are currently two packages that allow you create A-Frame scenes in R:
+
+* [r2vr](https://github.com/milesmcbain/r2vr) - used in this workshop
+* [aframer](https://github.com/JohnCoene/aframer)
+
+They have different capabilities, APIs, and are not interoperable.
+
+### r2vr Hello World
+
+Here's a familiar scene constructed with `r2vr`, we'll build some simpler
+examples soon, this is just to compare and contrast the syntax:
+
+```{r eval=FALSE}
+library(r2vr)
+
+## Configure scene
+
+js_libs <- list("https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js",
+                "https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"
+)
+
+hadley_gif <- a_asset(.tag = "img",
+                      src = "./figs/JT_R_code.gif",
+                      id = "hadz")
+
+box <- a_entity(.tag = "box",
+                position = c(-1, 0.5, -3),
+                rotaion = c(0, 45, 0),
+                src = hadley_gif,
+                shadow = "",
+                animation =
+                  list(property = "rotation",
+                       to = c(0, 360, 0),
+                       dur = 2000,
+                       loop = TRUE,
+                       easing = "linear"))
+
+sphere <- a_entity(.tag = "sphere",
+                   position = c(0, 1.25, -5),
+                   radius = 1.25,
+                   color = "#EF2D5E",
+                   shadow = "",
+                   mirror = list(resolution = 64,
+                                 interval = 150,
+                                 distance = 5000,
+                                 `repeat` = TRUE))
+
+cylinder <- a_entity(.tag = "cylinder",
+                     position = c(1, 0.75, -3),
+                     radius = 0.5,
+                     height = 1.5,
+                     color = "#FFC65D",
+                     shadow = "")
+
+floor <- a_entity(.tag = "plane",
+                  position = c(0, 0, -4),
+                  rotation = c(-90, 0, 0),
+                  width = 4,
+                  height = 4,
+                  color = "#7BC8A4",
+                  shadow = "")
+
+backboard <- a_entity(.tag = "plane",
+                      position = c(0, 2, -6),
+                      rotation = c(0, 0, 0),
+                      width = 4,
+                      height = 4,
+                      color = "#7BC8A4",
+                      shadow = "")
+
+sky <- a_entity(.tag = "sky", color = "#ECECEC")
+
+hello_world_scene <- a_scene(.template = "empty",
+                             .children = list(box, sphere, cylinder,
+                                              floor, backboard, sky),
+                             .js_sources = js_libs)
+
+## Serve a scene
+hello_world_scene$serve()
+
+## Stop serving a scene
+hello_world_scene$stop()
+```
+
+This is the equivalent A-Frame scene: https://glitch.com/edit/#!/pricey-kitten
+
+
+Things to note:
+
+* Components that were configured as HTML properties are now function arguments.
+* `r2vr` has just one function for creating entities, `a_entity()`, that creates `<a-entity>` HTML. It can create the shorthand modes, eg `<a-box>`, using the `.tag` argument.
+* The convention with argument names is anything that will appear in HTML literally is a plain argument, anything that is internal to `r2vr` has a `.` prefix.
+* assets can be passed directly to entities, no need for the make the `#** id referencealthough assets still need ids.
+ * The Hadley spinnig uses the animation component.
+
+
+## Spatial data in VR
+
+The type of work we will consider is making and plotting over 3D meshes. Recapping from the previous Act, the data types that are useful for this are:
+
+* Rasters
+  - Digital Elevation Modes give us mesh heights,
+  - Images can give us textures
+  - Model output to shade meshes
+* Simple features collections
+  - Giving us shapes for mesh boundaries
+
+The R packages we will use to get these data into VR are:
+
+* `raster`
+* `sf`
+* `tidyverse`
+* `quashmesh`
+* `r2vr.gis`
+* `r2vr`
+
+### DEM raster to VR
+
+For this example we will use a DEM dataset from Uluṟu-Kata Tut National Park.
+
+
+#### Load Raster
+
+```{r eval=FALSE}
+library(raster)
+library(quadmesh)
+
+uluru_raster <- raster("./data/ELVIS_CLIP.tif")
+
+plot(uluru_raster)
+crs(uluru_raster)
+## CRS arguments:
+## +proj=lcc +lat_1=-30 +lat_2=-20 +lat_0=-25 +lon_0=135 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+```
+
+**Check:** Does the raster have `units=m`? 
+
+* When we port the mesh to VR we want it to
+have units of meters since this is VCR's native unit. Consider re-projecting if need be.
+
+#### Crop Raster
+
+We'll be doing a smaller section to make things faster
+
+```{r eval=FALSE}
+library(r2vr.gis)
+library(sf)
+
+### coords come from a google map: https://drive.google.com/open?id=1Ak26Hyx1R-f2QjPCTK0rQLye5xcHyE8n&usp=sharing
+
+uluru_bbox <-
+  st_bbox(c(xmin = 131.02084,
+            xmax = 131.0535,
+            ymin = -25.35461,
+            ymax = -25.33568),
+          crs = st_crs("+proj=longlat +ellps=WGS84"))
+ 
+ uluru_raster <- raster_crop_bbox(uluru_raster, uluru_bbox)
+
+```
+
+#### Make Triangular Mesh
+
+We build a mesh using `quadmesh` and then cut each face in half so that it is a
+triangular mesh. A-Frame models can only have triangular faces.
+
+```{r eval=FALSE}
+uluru_mesh <- quadmesh(uluru_raster)
+rgl::shade3d(uluru_mesh)
+## looks good?
+
+## quadmesh::triangulate quads will make a mesh that VR thinks is inside out.
+## This will be fixed in future.
+triangulate_quads <- function(quad_index) {
+    matrix(rbind(quad_index[c(1L, 2L, 4L), ], quad_index[c(2L, 3L, 4L), ]), 3L)
+}
+
+uluru_trimesh_indices <- triangulate_quads(uluru_mesh$ib)
+```
+
+We now have the pieces of a triangular mesh.
+
+  * `uluru_mesh$vb` - are the mesh vertices and are actual points in space.
+  * `uluru_trimesh_indicies` - are indices into the vertices that describe triangles.
+
+Because we had the quad mesh expressed in this primitive form the transformation
+could be made without creating any additional vertices. They are re-used for
+triangles.
+
+#### Export to 3D model format
+
+The 3D model format we will use is a JSON format supported by three.js but not
+A-Frame natively. `r2vr` will take care of loading the 3rd party javascript
+necessary to use models of this type.
+
+When [gltf](https://www.khronos.org/gltf/) support comes to R, that would be
+preferred, but until then this is what we have.
+
+```{r eval=FALSE}
+library(readr)
+
+uluru_json <- trimesh_to_threejson(vertices = t(uluru_mesh$vb[1:3, ]),
+                                   face_vertices = t(uluru_trimesh_indices))
+
+write_file(uluru_json, "uluru.json")
+```
+
+#### Render in A-Frame
+
+```{r eval=FALSE}
+library(r2vr)
+
+uluru_asset <- a_asset(id = "uluru", src = "uluru.json")
+
+uluru_model <- a_json_model(src = uluru_asset)
+
+scene <- a_scene(.template = "basic_map",
+                 .children = list(uluru_model))
+scene$serve()
+## Fire started at 127.0.0.1:8080
+
+a_kill_all_scenes()
+```
+If you navigate to `127.0.0.1:8080` in your browser you should see the scene being served. You can try it on your phone as well but you need to use your computer's public IP scene$serve:
+
+```
+address()
+```

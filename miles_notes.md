@@ -39,7 +39,15 @@
 * nested entities
 * interactivity
 * Third party components
-*  Using Community Content
+* Using Community Content
+
+# Spatial Data to VR via R
+
+* into to r2vr
+* spatial data sources for working with VR: raster DEMS, shapes
+* 3d models
+* Plotting over maps
+
 
 # Links
 Other rstats aframe pkg: https://github.com/JohnCoene/aframer
