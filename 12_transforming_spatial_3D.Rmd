@@ -9,7 +9,6 @@
 
 # Transforming Spatial Data using modular 3D tools {.exercise}
 
-
 1. Tell us if you use 3D visualization or meshes in analysis. 
 
 
@@ -59,17 +58,15 @@ coolbutuseless/threed
 This is my work-in-progress approach to meshing any data structure. 
 
 
-```{r}
+```{r, eval=FALSE}
 ## devtools::install_github("hypertidy/anglr")
 library(anglr)  
 triangles <- copy_down(TRI(anySFpolygon), anyRasterDEM)
 
 mesh <- plot3d(triangles)
 
-## put textures on, pretty hard right now
-mesh$material$texture <- "WIP"
-#mesh$texcoords <- xyFromCell(setExtent(RasterDEM, extent(0, ncol(RasterDEM), 0, nrow(RasterDEM))), 
-#           cellFromXY(etc. etc. )
+## textures on vector data a work in progress
+
 ```
 
 

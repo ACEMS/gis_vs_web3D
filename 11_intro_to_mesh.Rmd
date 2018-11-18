@@ -78,6 +78,8 @@ quads3d(cbind(c(0, 1, 1, 0), c(0, 0, 1, 1), c(0, 0, 0, 0)), col="gray")
 rglwidget()
 ```
 
+
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 # Geospatial data
@@ -147,35 +149,6 @@ par(op)
 ```
 
 
-A raster is a very simple version of a mesh. When we store a raster we need the equivalent of
-
-* number of columns and rows
-* the extent in the coordinate system used (xmin, xmax, ymin, ymax)
-* the coordinate system
-* the cell values! (ncols * nrows of them)
-
-We can think of this another way, and in computer graphics and in `mesh3d` we store
-
-* the corner coordinates ((ncols + 1) * (nrows + 1) of them)
-* an index, 4 indices for every quad specify the coordinates
-* groupings, what quads belong to which objects 
-* the coordinate system (hopefully)
-
-It's the same for a triangular mesh. 
-
-* the corner coordinates 
-* an index, 3 indices for every triangle
-* groupings, what triangles belong to which objects (features)
-* the coordinate system (hopefully)
-
-We can store polygons this way too, but converting them to triangles is non-trivial. 
-
-And lines are
-
-* the end point coordinates of each line segment (or edge)
-* an index, 2 indices for every segment
-* groupings, what line segments belong to which objects (features)
-* the coordinate system (hopefully)
 
 # What is a polygon? 
 
@@ -202,7 +175,7 @@ What's in the middle?
 
 ```{r, echo=FALSE}
 w <- options(warn =-1)
-tri <- sf::st_cast(sfdct::ct_triangulate(minimal_mesh, a = 0.01, D = TRUE))
+junk <- capture.output( tri <- sf::st_cast(sfdct::ct_triangulate(minimal_mesh, a = 0.01, D = TRUE)))
 options(w)
 ## repeat previous plot
 par(mfcol = c(1, 2))
@@ -239,7 +212,9 @@ Where it does matter is for the concept of *orientation*, and 3D graphics do car
 In 3D, and to fill our polygons properly *as data*  - we need **primitives**. 
 
 
-# Primitives
+
+
+##  Primitives
 
 Terminology alert!  (This is *a working definition* of primitive, not everyone agrees.) 
 
@@ -250,7 +225,13 @@ Terminology alert!  (This is *a working definition* of primitive, not everyone a
 
 Topology ain't geometry 
 
-(This is *topological* dimension. Every one of these types of shape can exist in 1, 2, 3, or dimensional *geometry*. )
+(This is *topological* dimension. Every one of these types of shape can be depicted within a geometric space that is equal to or higher than the topological dimension.)
+
+We will have a matrix of vertices and a matrix of primitive indices. Quads and triangles are generally called *faces*, line segments are alternatively called *edges*. All are primitives in computer graphics, but we'll also see the term *finite element* used. 
+
+Topology can be 3D (tetrahedron) - imagine volumetric fill versus planar faces bounding a volume. Geometry can be 4D, X, Y, Z, T - or any dimensionality we need. 
+
+
 
 To fill our polygon we need triangles. 
 
@@ -267,6 +248,38 @@ plot(tri, border = NA)
 No tricky winding or even-odd rule to worry about, but we have lost our boundary around each distinct shape - we could find them by finding edges within a shape that are not shared by two triangles ...
 
 
+## Raster and vector are not a strong distinction when it comes to meshes
+
+A raster is a very simple version of a mesh. When we store a raster we need the equivalent of
+
+* number of columns and rows
+* the extent in the coordinate system used (xmin, xmax, ymin, ymax)
+* the coordinate system
+* the cell values! (ncols * nrows of them)
+
+We can think of this another way, and in computer graphics and in `mesh3d` we store
+
+* the corner coordinates ((ncols + 1) * (nrows + 1) of them)
+* an index, 4 indices for every quad specify the coordinates
+* groupings, what quads belong to which objects 
+* the coordinate system (hopefully)
+
+It's the same for a triangular mesh. 
+
+* the corner coordinates 
+* an index, 3 indices for every triangle
+* groupings, what triangles belong to which objects (features)
+* the coordinate system (hopefully)
+
+We can store polygons this way too, but converting them to triangles is non-trivial. 
+
+And lines are
+
+* the end point coordinates of each line segment (or edge)
+* an index, 2 indices for every segment
+* groupings, what line segments belong to which objects (features)
+* the coordinate system (hopefully)
+
 # the rgl mesh3d format
 
 Rgl is the OpenGL package in R. 
@@ -279,8 +292,6 @@ Quads are a funny case, usually carried by two triangles (at least implicitly) b
 
 
 ## Details of the mesh3d format 
-
-**trim out this section, it's taken from the quadmesh vignette, and integrate the final rgl plot better** 
 
 
 The simplest kind of mesh is a basic raster. Consider the matrix above.  
@@ -370,6 +381,15 @@ quads3d(t(qm$vb)[qm$ib,], col = rep(c("firebrick", "dodgerblue")[qm$ib %% 2 + 1]
 rglwidget()
 ```
 
+The situation for triangles is much the same, but we have `it` for the triangle index rather than `ib` for the quad index. In both cases the geometry is in the `vb` matrix. Models can have both quads and triangles, using the same set of vertices. 
+
+**WATCH OUT**
+
+The single most confusing thing I found with `mesh3d` was *homogeneous coordinates*. This
+is a fourth value on each vertex, making it `X, Y, Z, H` and because it's stored transpose, the `ib` and the `vb` matrices have the same number of rows (4). The `H` loosely corresponds to "zoom", for our purposes set `H = 1`. (If set to 0 no data will
+be visible, and a package of mine had this bug until last week.)
+
+
 
 # Quadmesh and coordinate systems {.exercise}
 
@@ -449,13 +469,17 @@ t3d <- structure(list(vb = t(cbind(coordinates(r), values(r), 1)), it = t(ptri),
 rgl::wire3d(t3d, lwd = 10, col = "black")
 rgl::rglwidget()
 ```
+
+
 The primary means to create this format from a raster is for 3D plotting, but because we have access to the coordinate directly it provides other uses. We can transform the coordinates (i.e. a map projection) or manipulate them and augment the Z value (for example) in flexible ways. 
 
 (The usual way of driving rgl grid surfaces is `rgl.surface` but this is limited to the centre-point interpretation only - more than the x, y, z list interface as image() is, i.e. it can take an individual x,y pair for every cell, but it cannot properly represent the cell-as-area as image can. For this we need to use `shade3d`, and actual `meshd3d` types in `rgl`). 
 
 
+# Summary
 
-
+* Topology and geometry are independently *dimensional*
+* Meshes compose of primitives
 
 
 
@@ -466,6 +490,8 @@ Most examples around use `rgl.surface`, but I am less familiar with that. The `t
 **rayshader** in particular, has extremely compelling outputs, but it uses the lower level `rgl.surface` and doesn't maintain the geographic coordinates, so I see it mostly as a texture-generator (but watch its development!). 
 
 
+**rgl.surface** can take X and Y *matrices*, so you can trivially reproject these data
+and wrap them around a sphere - I only learnt this recently. 
 
 
 
