@@ -26,6 +26,11 @@ setupKnitr()
 * What are meshes and topology?  
 * what is the relationship of meshes to geospatial raster/vector data?
 
+# Overview
+
+* Teaching: X min
+* Exercises: X min
+
 
 # What is a mesh? 
 
@@ -40,28 +45,47 @@ Key ideas!
 ## Topology vs. geometry
 
 
-This line has **1-dimensional topology** and is expressed in **3-dimensional geometry**. 
+This line has **1-dimensional topology** depicted in **3-dimensional geometry**. 
 
 ```{r}
 rgl.clear()
 library(rgl)
-(geometry <- cbind(x = c(0, 0, 0.5), y = c(0, 1, 0), z = c(0, 1, 0.8)))
+(geometry <- cbind(x = c(0, 0.5, 1), y = c(0, 0.5, 1), z = c(0, 0, 0.8)))
 (topology1 <- rbind(.v0 = c(1, 2), .v1 = c(2, 3)))
 lines3d(geometry[t(topology1), ], lwd = 3, col = "firebrick")
+material3d(col = "black")
 axis3d("x")
 axis3d("y")
 axis3d("z")
+title3d(xlab = "x", ylab = "y", zlab = "z")
+quads3d(cbind(c(0, 1, 1, 0), c(0, 0, 1, 1), c(0, 0, 0, 0) - 0.01), col="gray")
+
 rglwidget()
 ```
 
-This triangle has **2-dimensional topology** and is depicted in **3-dimensional geometry**. 
+This triangle has **2-dimensional topology** depicted in **3-dimensional geometry**. 
 
 ```{r}
 (topology2 <- rbind(.v0 = c(1, 2, 1), .v1 = c(2, 3, 1)))
 triangles3d(geometry[t(topology2), ], col = "firebrick")
+material3d(col = "black")
+axis3d("x")
+axis3d("y")
+axis3d("z")
+title3d(xlab = "x", ylab = "y", zlab = "z")
+quads3d(cbind(c(0, 1, 1, 0), c(0, 0, 1, 1), c(0, 0, 0, 0)), col="gray")
+
 rglwidget()
 ```
 
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+# Geospatial data
+
+* raster
+* vector
+
+These are traditionally kept separate, but in computer graphics the distinction starts to disappear. 
 
 ## What is a raster?
 
@@ -91,7 +115,9 @@ par(op)
 ```
 
 
-Or a continuous fields between points?  (Lots of ways to infer the field, including this very poor one). 
+Or a continuous fields between points?  
+
+(Lots of ways to infer the field, including this very poor one). 
 
 
 ```{r what-raster-2, echo=FALSE}
@@ -120,6 +146,36 @@ par(op)
 
 ```
 
+
+A raster is a very simple version of a mesh. When we store a raster we need the equivalent of
+
+* number of columns and rows
+* the extent in the coordinate system used (xmin, xmax, ymin, ymax)
+* the coordinate system
+* the cell values! (ncols * nrows of them)
+
+We can think of this another way, and in computer graphics and in `mesh3d` we store
+
+* the corner coordinates ((ncols + 1) * (nrows + 1) of them)
+* an index, 4 indices for every quad specify the coordinates
+* groupings, what quads belong to which objects 
+* the coordinate system (hopefully)
+
+It's the same for a triangular mesh. 
+
+* the corner coordinates 
+* an index, 3 indices for every triangle
+* groupings, what triangles belong to which objects (features)
+* the coordinate system (hopefully)
+
+We can store polygons this way too, but converting them to triangles is non-trivial. 
+
+And lines are
+
+* the end point coordinates of each line segment (or edge)
+* an index, 2 indices for every segment
+* groupings, what line segments belong to which objects (features)
+* the coordinate system (hopefully)
 
 # What is a polygon? 
 
@@ -171,16 +227,16 @@ Search:
 
 > it's not what you draw it's what you not draw ~Paul Murrell
 
-Technically the trick comes in two types, either the *even-odd* or *winding* rule, and this trick is not part of this workshop. Where it does matter is for the concept of *orientation*, and 3D graphics do care about the direction that triangles are wound (consider that reversing the direction is like flipping the triangle in place in terms of how algorithms behave ...). 
+Technically the trick comes in two types, either the *even-odd* or *winding* rule, and this trick is not part of this workshop. The graphics engine uses this rule to draw a pixel if it has been encircled an even or odd number of times, or using a rule about in which direction it was encircled. It happens deep in the graphics. 
+
+
+Where it does matter is for the concept of *orientation*, and 3D graphics do care about the direction that triangles are wound (consider that reversing the direction is like flipping the triangle in place in terms of how some algorithms behave ...). 
 
 
 
 # What's the fill? 
 
-In 2D graphics there is no fill, there's a trick that the graphics engine uses to draw a pixel if it has been encircled an even or odd number of times, or rule about in which direction it was encircled. It happens deep in the graphics. 
-
-In 3D, and to fill our polygons properly *as data* we need **primitives**. 
-
+In 3D, and to fill our polygons properly *as data*  - we need **primitives**. 
 
 
 # Primitives
@@ -222,7 +278,7 @@ It supports two kinds of primitives **quads** and **triangles**.
 Quads are a funny case, usually carried by two triangles (at least implicitly) but they are an important computer graphics element. 
 
 
-## WIP - Mesh3d gory details 
+## Details of the mesh3d format 
 
 **trim out this section, it's taken from the quadmesh vignette, and integrate the final rgl plot better** 
 
@@ -242,7 +298,7 @@ When considered as an image, each matrix element occupies a certain space in wid
 ```{r}
 x <- seq(1, nrow(m)) - 0.5
 y <- seq(1, ncol(m)) - 0.5
-image(x, y, m)
+image(x, y, m, col = colpal())
 text(expand.grid(x, y), lab = m[])
 ```
 
@@ -285,9 +341,9 @@ The structure is `vb`, the coordinates of the mesh - these are the
 actual corner coordinates from the input raster.  
 
 ```{r}
-image(r)
+image(r, col = colpal())
 op <- par(xpd = NA)
-text(t(qm$vb), lab = 1:20)
+text(t(qm$vb), lab = 1:ncol(qm$vb))
 par(op)
 ```
 
@@ -304,16 +360,19 @@ It works directly with rgl function, and can be used in more raw form.
 ```{r}
 rgl.clear()
 library(rgl)
-shade3d(qm)
+shade3d(qm, col = "firebrick")
 rglwidget()
 rgl.clear()
-quads3d(t(qm$vb)[qm$ib,])
+quads3d(t(qm$vb)[qm$ib,], col = c("firebrick", "dodgerblue")[qm$ib %% 2 + 1])
+rglwidget()
+rgl.clear()
+quads3d(t(qm$vb)[qm$ib,], col = rep(c("firebrick", "dodgerblue")[qm$ib %% 2 + 1], each = 4))
 rglwidget()
 ```
 
 
 
-**Better code than above**
+There's still a problem with what quadmesh can do. 
 
 ```{r}
 
@@ -334,7 +393,7 @@ tmp <- plot3d(tri)
 rgl.pop()
 rgl.clear()
 shade3d(tmp, alpha = 0.5, specular = "black", col = "grey")
-wire3d(tmp, col = "black", lwd = 2)
+#wire3d(tmp, col = "black", lwd = 2)
 rgl::aspect3d(1, 1, .2)
 bg3d("lightgrey")
 # 

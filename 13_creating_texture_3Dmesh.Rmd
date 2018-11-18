@@ -1,3 +1,12 @@
+# Questions
+
+
+# Overview
+
+* Teaching: X min
+* Exercises: X min
+
+
 # Create and texture a 3D mesh
 
 Create and texture a 3D mesh in R from a variety of spatial data sources (e.g. Shapefile + digital elevation model + satellite raster).

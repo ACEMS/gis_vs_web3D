@@ -1,4 +1,17 @@
-# Transforming Spatial Data using modular 3D tools
+# Questions
+
+
+# Overview
+
+* Teaching: X min
+* Exercises: X min
+
+
+# Transforming Spatial Data using modular 3D tools {.exercise}
+
+
+1. Tell us if you use 3D visualization or meshes in analysis. 
+
 
 This is hard! There's a few scattered tools. 
 
