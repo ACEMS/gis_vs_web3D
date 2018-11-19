@@ -8,19 +8,20 @@ library(quadmesh)
 qm_volcano <- quadmesh(rvolcano)
 library(rgl)
 rgl.clear()
-shade3d(qm_volcano, col = "grey"); aspect3d(1, 1, 0.25); rglwidget()
+shade3d(qm_volcano, col = "grey"); aspect3d(1, 1, 0.25)
+rglwidget()
 
 
-## 
+## etopo is a test copy of a partial world DEM
 data("etopo", package = "quadmesh")
 qm_etopo <- quadmesh(crop(etopo, extent(80, 160, -50, 10)))
 qm_etopo$material$col <- colourvalues::colour_values(qm_etopo$vb[3, qm_etopo$ib])
 rgl.clear()
-shade3d(qm_etopo); aspect3d(1, 1, .2); rglwidget()
+shade3d(qm_etopo); aspect3d(1, 1, .2)
+rglwidget()
 
 
-## polygons (only on Github)
-
+## polygon triangulation as a mesh (only on Github)
 library(sf)
 north_carolina <- read_sf(system.file("gpkg/nc.gpkg", package = "sf"))
 north_carolina <- st_transform(north_carolina, 
@@ -35,18 +36,19 @@ mesh_nc <- copy_down(mesh_nc, gebco1)
 
 ## plot it
 rgl.clear()
-plot3d(mesh_nc); aspect3d(1, 1, .2); rglwidget()
+plot3d(mesh_nc); aspect3d(1, 1, .2)
+rglwidget()
 
 
 ## another example, copy feature attributes (discrete measure)
 rgl.clear()
 mesh_sid <- copy_down(DEL(north_carolina, max_area = 1e9), "SID79")
-plot3d(mesh_sid); aspect3d(1, 1, .2); rglwidget()
+plot3d(mesh_sid); aspect3d(1, 1, .2)
+rglwidget()
+
 
 # Create and texture a 3D mesh in R from a variety of spatial data sources (e.g.
 # Shapefile + digital elevation model + satellite raster).
-
-
 library(quadmesh)
 library(raster)
 bm_url <- "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
