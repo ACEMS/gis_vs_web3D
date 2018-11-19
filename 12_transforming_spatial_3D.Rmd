@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Questions
 
 
@@ -18,12 +23,15 @@ This is hard! There's a few scattered tools.
 
 * `rgl::triangulate` and `decido::earcut` will triangulate polygons with holes but only suitable for plane-filling, because ugly triangles, no control over size and shape. 
 
-* `RTriangle::triangulate` and `sfdct::ct_triangulate` do high-quality "near-Delaunay" triangulations
+* `RTriangle::triangulate` (and `sfdct::ct_triangulate`) do high-quality "near-Delaunay" triangulations
 
 * `quadmesh::quadmesh` to create rgl-ready mesh3d from a raster
 
 * `mapview::cubeView` does very compelling interactive raster-cube visualization
 
+* `SymbolixAU/mapdeck`
+
+* `tylermorganwall/rayshader`
 
 
 Side note: there are many triangulation algorithms and many packages in R, but we need *constrained triangulation* to preserve all input edges - only a handful can do that, and RTriangle is the king (with a problematic license). 
@@ -48,8 +56,6 @@ Triangulations, `sfdct` is no good because it's very inefficient. `sf` is simply
 
 * this workshop!  https://github.com/MilesMcBain/gis_vs_web3D 
 
-* `SymbolixAU/mapdeck`
-
 * `coolbutuseless/threed`
 
 
@@ -60,12 +66,11 @@ This is my work-in-progress approach to meshing any data structure.
 
 ```{r, eval=FALSE}
 ## devtools::install_github("hypertidy/anglr")
+## devtools::install_github("hypertidy/silicate")
 library(anglr)  
 triangles <- copy_down(TRI(anySFpolygon), anyRasterDEM)
 
 mesh <- plot3d(triangles)
-
-## textures on vector data a work in progress
 
 ```
 
