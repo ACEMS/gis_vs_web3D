@@ -1,5 +1,5 @@
 ---
-title: "Git for Scientists"
+title: "Generalising spatial data to 3D and VR"
 author: Miles McBain, Michael Sumner
 description: Moving from spatial to 3D to VR using R
 documnetclass: book
