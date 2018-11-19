@@ -44,13 +44,13 @@ Triangulations, `sfdct` is no good because it's very inefficient. `sf` is simply
 
 ## Stuff not on CRAN!
 
-hypertidy/silicate, hypertidy/anglr - these are evolving together 
+* `hypertidy/silicate`, `hypertidy/anglr` - these are evolving together 
 
-MilesMcBain/r2vr, MilesMcBain/r2vr.gis
+* this workshop!  https://github.com/MilesMcBain/gis_vs_web3D 
 
-SymbolixAU/mapdeck
+* `SymbolixAU/mapdeck`
 
-coolbutuseless/threed
+* `coolbutuseless/threed`
 
 
 # Triangles or quads in hypertidy (WIP)
@@ -80,6 +80,7 @@ Create and texture a 3D mesh in R from a variety of spatial data sources (e.g. S
 Texture an image onto our hemisphere. 
 
 ```{r download_blue_marble, eval=TRUE}
+library(quadmesh)
 bm_url <- "https://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
 bm_file <- basename(bm_url)
 if (!file.exists(bm_file)) download.file(bm_url, bm_file)
