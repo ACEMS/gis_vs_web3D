@@ -1,9 +1,4 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-
+# Introduction to 3D and mesh forms of spatial data
 
 ```{r setup, include=FALSE}
 library(rgl)
@@ -21,18 +16,18 @@ setupKnitr()
 
 ```
 
-# Questions
+## Questions
 
 * What are meshes and topology?  
 * what is the relationship of meshes to geospatial raster/vector data?
 
-# Overview
+## Overview
 
 * Teaching: X min
 * Exercises: X min
 
 
-# What is a mesh? 
+## What is a mesh? 
 
 Key ideas!  
 
@@ -91,7 +86,7 @@ rglwidget()
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-# Geospatial data
+## Geospatial data
 
 * raster
 * vector
@@ -159,7 +154,7 @@ par(op)
 
 
 
-# What is a polygon? 
+## What is a polygon? 
 
 A series of grouped *paths*?
 
@@ -216,7 +211,7 @@ Where it does matter is for the concept of *orientation*, and 3D graphics do car
 
 
 
-# What's the fill? 
+## What's the fill? 
 
 In 3D, and to fill our polygons properly *as data*  - we need **primitives**. 
 
@@ -289,7 +284,7 @@ And lines are
 * groupings, what line segments belong to which objects (features)
 * the coordinate system (hopefully)
 
-# the rgl mesh3d format
+## the rgl mesh3d format
 
 Rgl is the OpenGL package in R. 
 
@@ -400,13 +395,13 @@ be visible, and a package of mine had this bug until last week.)
 
 
 
-# Quadmesh and coordinate systems {.exercise}
+## Quadmesh and coordinate systems {.exercise}
 
 1. Run this code 
 2. Think about what is wrong with the scene. 
 3. What can we do about the ugly plot? 
 
-```{r}
+```{r, eval=FALSE}
 library(quadmesh)
 
 qm1 <- quadmesh(crop(worldll, etopo))
@@ -424,7 +419,7 @@ rglwidget()
 5. Can you explain why we multiply the Etopo2 terrain elevation by 20? 
 6. What are alternatives we could use? 
 
-```{r}
+```{r, eval=FALSE}
 qm2 <- qm1
 qm2$vb[3, ] <- qm2$vb[3, ] * 20
 qm2$vb[1:3, ] <- t(llh2xyz(t(qm2$vb[1:3, ])))
@@ -485,7 +480,7 @@ The primary means to create this format from a raster is for 3D plotting, but be
 (The usual way of driving rgl grid surfaces is `rgl.surface` but this is limited to the centre-point interpretation only - more than the x, y, z list interface as image() is, i.e. it can take an individual x,y pair for every cell, but it cannot properly represent the cell-as-area as image can. For this we need to use `shade3d`, and actual `meshd3d` types in `rgl`). 
 
 
-# Summary
+## Summary
 
 * Topology and geometry are independently *dimensional*
 * Meshes include a matrix of vertices and a matrix of indices
