@@ -1,18 +1,17 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
-# Questions
+# Transforming spatial data to 3D forms
+
+## Questions
+
+* What tools exist to convert data to meshes in R? 
 
 
-# Overview
+## Overview
 
 * Teaching: X min
 * Exercises: X min
 
 
-# Transforming Spatial Data using modular 3D tools {.exercise}
+## Transforming Spatial Data using modular 3D tools {.exercise}
 
 1. Tell us if you use 3D visualization or meshes in analysis. 
 
@@ -59,7 +58,7 @@ Triangulations, `sfdct` is no good because it's very inefficient. `sf` is simply
 * `coolbutuseless/threed`
 
 
-# Triangles or quads in hypertidy (WIP)
+## Triangles or quads in hypertidy (WIP)
 
 This is my work-in-progress approach to meshing any data structure. 
 
@@ -77,7 +76,7 @@ mesh <- plot3d(triangles)
 
 
 
-# Create and texture a 3D mesh
+## Create and texture a 3D mesh
 
 Create and texture a 3D mesh in R from a variety of spatial data sources (e.g. Shapefile + digital elevation model + satellite raster).
 
