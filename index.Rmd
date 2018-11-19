@@ -1,0 +1,13 @@
+---
+title: "Git for Scientists"
+author: Miles McBain, Michael Sumner
+description: Moving from spatial to 3D to VR using R
+documnetclass: book
+site: bookdown::bookdown_site
+---
+
+# About this
+
+This workshop is for R users familiar with spatial workflows looking to explore
+and share their data in new mediums like VR. In introduces two new packages
+`quadmesh` and `r2vr`.
