@@ -140,6 +140,11 @@ Things to note:
 * assets can be passed directly to entities, no need for the make the `#** id referencealthough assets still need ids.
  * The Hadley spinnig uses the animation component.
 
+### R2VR tips
+
+`r2vr` is an A-Frame html code generator and server that users 3 main R6 classes created with `a_entity()`, `a_asset()` and `a_scene()`. You can view the HTML associated with these objects by calling their `render()` method. eg:
+
+
 
 ## Spatial data in VR
 
@@ -218,11 +223,8 @@ rgl::shade3d(uluru_mesh)
 
 ## quadmesh::triangulate quads will make a mesh that VR thinks is inside out.
 ## This will be fixed in future.
-triangulate_quads <- function(quad_index) {
-    matrix(rbind(quad_index[c(1L, 2L, 4L), ], quad_index[c(2L, 3L, 4L), ]), 3L)
-}
 
-uluru_trimesh_indices <- triangulate_quads(uluru_mesh$ib)
+uluru_trimesh_indices <- triangulate_quads(uluru_mesh$ib, clockwise = FALSE)
 ```
 
 We now have the pieces of a triangular mesh.
@@ -242,6 +244,9 @@ necessary to use models of this type.
 
 When [gltf](https://www.khronos.org/gltf/) support comes to R, that would be
 preferred, but until then this is what we have.
+
+Notice the use of `t()`. The VR tools expect columns of x, y, z coordinates
+while `rgl` and `quadmesh` work in rows.
 
 ```{r eval=FALSE}
 library(readr)
@@ -271,5 +276,196 @@ a_kill_all_scenes()
 If you navigate to `127.0.0.1:8080` in your browser you should see the scene being served. You can try it on your phone as well but you need to use your computer's public IP scene$serve:
 
 ```
-address()
+scene$serve(host = "<YOUR_IP>")
 ```
+
+If things are working you should see a scene empty but for a grey grid. This
+grid is part of the `"basic_map"` template - it is added in automatically. It's a
+visual reference as each square is 1x1 VR meters. It also let's you know that
+things are 'working' - although Uluru is not visible at the moment.
+
+#### Find Uluru {.exercise}
+
+We've imported a full scale model of Uluru in VR but we can't see it just yet. 
+
+1. Use the A-Frame inspector to find an appropriate, `scale`, `position`, `rotation`, and `color`, to view the model.
+
+Notice the position of the mesh, what does it say about how the coordinates have been transformed?
+
+#### Setting the position and scale
+
+From the previous exercise we learned that the model was too large to practically
+view, was rotated with it's z-axis pointing toward camera, and had been centred.
+
+To keep it spatially referenced, it's a good idea to set up some constants
+relating to transforming the model to VR for example:
+
+* `scale_factor` 
+    - the scale of the model
+* `mesh_centre` 
+    - the centre of the original mesh so that we can use it to transform the coordinates of other things we would like to plot in spatial context over the mesh.
+* `height_correction` 
+    - the correction to apply to the height so that the 'ground' is at a VR height of 0. 
+    - This means we need to decide on what the true ground height should be. Here we use a simple approach of taking the lowest point in the raster extent.
+    - We create this as an xyz vector so it can easily be added to positions.
+
+We define these and view the result:
+
+```{r eval=FALSE}
+## Model constants
+scale_factor <- 0.01
+
+mesh_centre <- colMeans(t(uluru_mesh$vb[1:3,]))
+
+extent_coord_mat <-
+  matrix(extent(uluru_raster),
+         nrow = 2, ncol = 2, byrow = FALSE)
+
+lowest_corner <- min(raster::extract(uluru_raster,
+                                 extent_coord_mat))
+
+height_correction <- c(0, mesh_centre[3] - lowest_corner, 0)
+
+## Scene definition
+uluru_asset <- a_asset(id = "uluru", src = "uluru.json", .parts = "uluru.png")
+
+uluru_model <- a_json_model(src = uluru_asset,
+                            scale = c(1, 1, 1) * scale_factor,
+                            position = (c(0, 0, -5) + height_correction) * scale_factor,
+                            material = list(color = '#C88A77'),
+                            rotation = c(-90, 0, 0))
+
+scene <- a_scene(.template = "basic_map",
+                 .children = list(uluru_model))
+scene$serve()
+
+a_kill_all_scenes()
+```
+
+It's taking shape! But we can do better than plain brown.
+
+#### Texturing using satellite imagery
+
+We can use images to texture our mesh. This uses work we have done recently to make getting tiles from tile servers easier in R. The high level workflow is:
+
+1. Fetch and composite satellite tiles for the mesh bounding box.
+1. Rebuild mesh with `quadmesh` texture args, and export the model to supplying the texture coordinates with a reference to the texture image.
+
+##### Fetch texture image
+```{r eval=FALSE}
+
+## Fetch textures from ESRI maps
+## from slippymath README:
+library(purrr)
+library(curl)
+library(glue)
+library(slippymath)
+
+tile_grid <- bb_to_tg(uluru_bbox, max_tiles = 15)
+
+esri_query_string <-
+  paste0("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{zoom}/{y}/{x}")
+
+images <-
+  pmap(tile_grid$tiles,
+       function(x, y, zoom){
+         outfile <- glue("{x}_{y}.jpg")
+         curl_download(url = glue(esri_query_string),
+                       destfile = outfile) 
+         outfile 
+       },
+       zoom = tile_grid$zoom)
+
+## Create a new textured quamesh and export it to JSON
+raster_out <- tg_composite(tile_grid, images)
+
+raster_to_png(raster_out, "uluru.png")
+
+uluru_mesh_tex <- quadmesh(uluru_raster, texture = raster_out, texture_filename = "uluru.png")
+
+uluru_trimesh_indices <- triangulate_quads(uluru_mesh_tex$ib, clockwise = FALSE)
+
+uluru_json <- trimesh_to_threejson(vertices = t(uluru_mesh_tex$vb[1:3, ]),
+                                   face_vertices = t(uluru_trimesh_indices),
+                                   vertex_uvs = t(uluru_mesh_tex$texcoords),
+                                   texture_file = "uluru.png")
+
+write_file(uluru_json, "uluru.json")
+
+## Scene definition
+uluru_asset <- a_asset(id = "uluru", src = "uluru.json", .parts = "uluru.png")
+
+uluru_model <- a_json_model(src = uluru_asset,
+                            scale = c(1, 1, 1) * scale_factor,
+                            position = (c(0, 0, -5) + height_correction) * scale_factor,
+                            rotation = c(-90, 0, 0))
+scene <- a_scene(.template = "basic_map",
+                 .children = list(uluru_model))
+scene$serve()
+
+a_kill_all_scenes()
+```
+
+#### Shading using data
+
+In this section we look at shading the mesh with an arbitrary raster. This could
+represent the output of a spatial model.
+
+We first generate a raster using a noise generator, we then use it to texture
+the mesh.
+
+```{r eval=FALSE}
+library(ambient)
+library(scico)
+
+noise <-
+  setExtent(raster(noise_simplex(c(500, 600),
+                                 fractal = "none")),
+            extent(uluru_raster))
+
+colouring_raster_data <-
+  raster::extract(noise, t(uluru_mesh_tex$vb[1:2, ]))
+
+n_colours <- 256
+
+palette_function <-
+  purrr::partial(scico, palette = "tokyo")
+
+vertex_colour_data <-
+  vec_pal_colours(colouring_raster_data,
+                  palette_function,
+                  n_colours,
+                  zero_index = TRUE)
+
+face_colours <-
+  vertex_to_face_colours(vertex_colour_data$indexes,
+                         t(uluru_trimesh_indices))
+                         
+mesh_json <-
+  trimesh_to_threejson(vertices = t(uluru_mesh$vb[1:3,]),
+                       face_vertices = t(uluru_trimesh_indices),
+                       colours = vertex_colour_data$colours,
+                       face_vertex_colours = face_colours)
+
+
+## Scene definition
+uluru_asset_mod <- a_in_mem_asset(id = "uluru_mod", src = "uluru_mod.json", .data = mesh_json)
+
+uluru_model2 <- a_json_model(src = uluru_asset_mod,
+                            material = list(src = uluru_asset_mod, opacity = 0.5),
+                            scale = c(1.001, 1.001, 1.001) * scale_factor,
+                            position = (c(0, 0, -5) + height_correction) * scale_factor,
+                            rotation = c(-90, 0, 0))
+
+scene <- a_scene(.template = "basic_map",
+                 .children = list(uluru_model2))
+scene$serve()
+
+a_kill_all_scenes()
+
+plot(raster(volcano), col = scico(26, palette = "tokyo"))
+```
+### Plotting VR elements over a spatial mesh
+
+
+#### TODO
