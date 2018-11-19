@@ -40,7 +40,10 @@ Key ideas!
 * **Geometry**: the *where* of things. 
 * **Indexing**: the *link* between topology and geometry. 
 
-*Traditional spatial data tends to confuse topology and geometry.*  This is the major motivating problem behind my interest in these ideas. 
+*Traditional spatial data tends to confuse topology and geometry.*  
+
+
+These are motiving problems behind my interest in these ideas. 
 
 * Lossless reprojection
 * Topology fixes
