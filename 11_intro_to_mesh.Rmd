@@ -1,4 +1,4 @@
-# Introduction to 3D and mesh forms of spatial data
+# 3D and mesh forms of spatial data
 
 ```{r setup, include=FALSE}
 library(rgl)
@@ -10,9 +10,6 @@ library(sfdct)
 library(silicate)
 library(tidyr)
 library(viridis)
-
-setupKnitr()
-#knitr::knit_hooks$set(webgl = rgl::hook_webgl)
 
 ```
 
@@ -46,7 +43,7 @@ These are motiving problems behind my interest in these ideas.
 * Visualization
 
 
-## Topology vs. geometry
+Topology vs. geometry
 
 
 This line has **1-dimensional topology** depicted in **3-dimensional geometry**. 
@@ -93,7 +90,8 @@ rglwidget()
 
 These are traditionally kept separate, but in computer graphics the distinction starts to disappear. 
 
-## What is a raster?
+
+What is a raster?
 
 A layer of neighbouring rectangles? 
 
@@ -154,7 +152,7 @@ par(op)
 
 
 
-## What is a polygon? 
+What is a polygon? 
 
 A series of grouped *paths*?
 
@@ -211,7 +209,7 @@ Where it does matter is for the concept of *orientation*, and 3D graphics do car
 
 
 
-## What's the fill? 
+What's the fill? 
 
 In 3D, and to fill our polygons properly *as data*  - we need **primitives**. 
 
@@ -240,6 +238,8 @@ Topology can be 3D (tetrahedron) - imagine volumetric fill versus planar faces b
 To fill our polygon we need triangles. 
 
 ```{r}
+data("minimal_mesh", package = "silicate")
+tri <- sf::st_cast(sfdct::ct_triangulate(minimal_mesh, a = 0.01, D = TRUE))
 plot(tri)
 ```
 
@@ -251,8 +251,12 @@ plot(tri, border = NA)
 
 No tricky winding or even-odd rule to worry about, but we have lost our boundary around each distinct shape - we could find them by finding edges within a shape that are not shared by two triangles ...
 
+```{r}
+plot(tri, border = NA, col = rainbow(10))
+```
 
-## Raster and vector are not a strong distinction when it comes to meshes
+
+Raster and vector are not a strong distinction when it comes to meshes
 
 A raster is a very simple version of a mesh. When we store a raster we need the equivalent of
 
@@ -261,7 +265,7 @@ A raster is a very simple version of a mesh. When we store a raster we need the 
 * the coordinate system
 * the cell values! (ncols * nrows of them)
 
-We can think of this another way, and in computer graphics and in `mesh3d` we store
+In in computer graphics we store
 
 * the corner coordinates ((ncols + 1) * (nrows + 1) of them)
 * an index, 4 indices for every quad specify the coordinates
@@ -275,7 +279,6 @@ It's the same for a triangular mesh.
 * groupings, what triangles belong to which objects (features)
 * the coordinate system (hopefully)
 
-We can store polygons this way too, but converting them to triangles is non-trivial. 
 
 And lines are
 
@@ -284,24 +287,14 @@ And lines are
 * groupings, what line segments belong to which objects (features)
 * the coordinate system (hopefully)
 
-## the rgl mesh3d format
+## A raster is a mesh (implicitly)
 
-Rgl is the OpenGL package in R. 
-
-A classic **computer graphics** data model called *mesh3d*, it's not widely used but is very powerful. You can visualize a mesh3d with `shade3d()`, all the aesthetics, material properties, geometry and topology are present in the model with some control allowed by the shade3d function. 
-
-It supports two kinds of primitives **quads** and **triangles**. 
-
-Quads are a funny case, usually carried by two triangles (at least implicitly) but they are an important computer graphics element. 
-
-
-## Details of the mesh3d format 
-
-
-The simplest kind of mesh is a basic raster. Consider the matrix above.  
+The simplest kind of mesh is a basic raster. Consider the matrix the matrix (used above).  
 
 ```{r}
-(m)
+m <- matrix(c(seq(0, 0.5, length = 5), 
+            seq(0.375, 0, length = 4)), 3)
+
 ```
 
 On its own this matrix has absolutely nothing to do with spatial data, it is literally a collection of 9 numeric values in a given order, and by the magic of programming we've nominated a shape of 3x3. We can't help but think about this shape spatially however, but there's a problem. Does each element occupy space or should we consider them to be infinitesimal locations? 
@@ -341,11 +334,19 @@ as(as(raster::rasterToPolygons(r), "SpatialLinesDataFrame"),
    "SpatialPointsDataFrame")
 ```
 
-There are only 20 unique coordinates at the corners, which is where quadmesh comes in. 
+There are only 20 unique coordinates at the corners, which is where `quadmesh` comes in. 
 
 
-**Pop out to real example with quadmesh**. 
+## the rgl mesh3d format
 
+Rgl is the OpenGL package in R. 
+
+A classic **computer graphics** data model called *mesh3d*, it's not widely used but is very powerful. You can visualize a `mesh3d` model with `shade3d()`, all the aesthetics, material properties, geometry and topology can be attached to the model
+itself as data. 
+
+It supports two kinds of primitives **quads** and **triangles**. 
+
+Quads are a funny case, usually carried by two triangles (at least implicitly) but they are an important computer graphics element. 
 
 
 ```{r}
@@ -386,17 +387,16 @@ rgl.clear()
 quads3d(t(qm$vb)[qm$ib,], col = c("firebrick", "dodgerblue")[qm$ib %% 2 + 1])
 rglwidget()
 rgl.clear()
-quads3d(t(qm$vb)[qm$ib,], col = rep(c("firebrick", "dodgerblue")[qm$ib %% 2 + 1], each = 4))
+quads3d(t(qm$vb)[qm$ib,], col = rep(c("firebrick", "dodgerblue"), each = 4))
 rglwidget()
 ```
 
 The situation for triangles is much the same, but we have `it` for the triangle index rather than `ib` for the quad index. In both cases the geometry is in the `vb` matrix. Models can have both quads and triangles, using the same set of vertices. 
 
-**WATCH OUT**
 
-The single most confusing thing I found with `mesh3d` was *homogeneous coordinates*. This
-is a fourth value on each vertex, making it `X, Y, Z, H` and because it's stored transpose, the `ib` and the `vb` matrices have the same number of rows (4). The `H` loosely corresponds to "zoom", for our purposes set `H = 1`. (If set to 0 no data will
-be visible, and a package of mine had this bug until last week.)
+
+**Pop out to real example with quadmesh**. 
+
 
 
 
@@ -462,10 +462,6 @@ rgl::aspect3d(1, 1, .2)
 bg3d("lightgrey")
 # 
 qm <- quadmesh::quadmesh(r)
-#tm <- qm
-#tm$it <- quadmesh::triangulate_quads(qm$ib)
-#tm$ib <- NULL
-#tm$primitivetype <- "triangle"
 
 ## the point of this part is to show the quads don't carry the z information well (it's ok with very fine quads)
 rgl::wire3d(qm, lwd = 8, col = "green")
@@ -491,8 +487,6 @@ The primary means to create this format from a raster is for 3D plotting, but be
 * Meshes include a matrix of vertices and a matrix of indices
 * In mesh-terms rasters and polygons aren't so different
 
-
-
 ## rgl miscellanea
 
 Most examples around use `rgl.surface`, but I am less familiar with that. The `thing3d` are the higher-level functions in rgl, and the `rgl.thing` functions are lower-level (recommended not to mix them in usage). 
@@ -502,6 +496,11 @@ Most examples around use `rgl.surface`, but I am less familiar with that. The `t
 
 **rgl.surface** can take X and Y *matrices*, so you can trivially reproject these data
 and wrap them around a sphere - I only learnt this recently. 
+
+
+**WATCH OUT**
+
+The single most confusing thing I found with `mesh3d` was *homogeneous coordinates*. This is a fourth value on each vertex, making it `X, Y, Z, H` and because it's stored transpose, the `ib` and the `vb` matrices have the same number of rows (4). The `H` loosely corresponds to "zoom", for our purposes set `H = 1`. (If set to 0 no data will be visible, and a package of mine had this bug until last week.)
 
 
 
