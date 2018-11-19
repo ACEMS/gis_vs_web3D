@@ -462,10 +462,17 @@ scene <- a_scene(.template = "basic_map",
 scene$serve()
 
 a_kill_all_scenes()
-
-plot(raster(volcano), col = scico(26, palette = "tokyo"))
 ```
 ### Plotting VR elements over a spatial mesh
 
+```{r eval=FALSE}
 
-#### TODO
+kangaroo <- a_asset(id = "kangaroo",
+        src = test_path("data/kangaroo_01.gltf"),
+        .parts = test_path("data/Kangaroo_01.bin"))
+
+
+
+
+
+```
