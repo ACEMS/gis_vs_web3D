@@ -343,6 +343,11 @@ as(as(raster::rasterToPolygons(r), "SpatialLinesDataFrame"),
 
 There are only 20 unique coordinates at the corners, which is where quadmesh comes in. 
 
+
+**Pop out to real example with quadmesh**. 
+
+
+
 ```{r}
 library(quadmesh)
 qm <- quadmesh(r)
