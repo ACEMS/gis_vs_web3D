@@ -38,7 +38,7 @@ Side note: there are many triangulation algorithms and many packages in R, but w
 Quadmesh. 
 
 
-```{r, quadmesh}
+```{r, quadmesh, eval=FALSE}
 library(quadmesh)
 quadmesh(anyRasterDEM, texture = anyRasterRGB)
 rgl::shade3d()
