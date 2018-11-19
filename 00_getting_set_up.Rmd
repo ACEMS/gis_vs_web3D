@@ -2,7 +2,7 @@
 
 You need the latest versions of these R packages installed using `devtools`. 
 
-* devtools::install_github('mdsumner/quadmesh')
+* devtools::install_github('hypertidy/quadmesh')
 * devtools::install_github('hypertidy/anglr')
 * devtools::install_github('milesmcbain/r2vr')
 * devtools::install_github('milesmcbain/r2vr.gis')
