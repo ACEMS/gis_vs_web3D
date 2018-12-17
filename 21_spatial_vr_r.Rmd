@@ -1,8 +1,15 @@
 # Spatial Data to VR via R
 
+## Questions
+
 * How do I create an A-Frame scene with R?
 * What kinds of data can we represent in A-Frame?
 * How do I render spatial data in VR?
+
+## Overview
+
+Teaching: 30min
+Exercises: 5min
 
 ## Motivation
 
@@ -398,7 +405,8 @@ uluru_asset <- a_asset(id = "uluru", src = "uluru.json", .parts = "uluru.png")
 uluru_model <- a_json_model(src = uluru_asset,
                             scale = c(1, 1, 1) * scale_factor,
                             position = (c(0, 0, -5) + height_correction) * scale_factor,
-                            rotation = c(-90, 0, 0))
+                            rotation = c(-90, 0, 0),
+                            mesh_smooth = TRUE)
 scene <- a_scene(.template = "basic_map",
                  .children = list(uluru_model))
 scene$serve()
@@ -452,7 +460,6 @@ mesh_json <-
 uluru_asset_mod <- a_in_mem_asset(id = "uluru_mod", src = "uluru_mod.json", .data = mesh_json)
 
 uluru_model2 <- a_json_model(src = uluru_asset_mod,
-                            material = list(src = uluru_asset_mod, opacity = 0.5),
                             scale = c(1.001, 1.001, 1.001) * scale_factor,
                             position = (c(0, 0, -5) + height_correction) * scale_factor,
                             rotation = c(-90, 0, 0))
@@ -462,17 +469,3 @@ scene <- a_scene(.template = "basic_map",
 scene$serve()
 
 a_kill_all_scenes()
-```
-### Plotting VR elements over a spatial mesh
-
-```{r eval=FALSE}
-
-kangaroo <- a_asset(id = "kangaroo",
-        src = test_path("data/kangaroo_01.gltf"),
-        .parts = test_path("data/Kangaroo_01.bin"))
-
-
-
-
-
-```

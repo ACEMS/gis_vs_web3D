@@ -20,8 +20,8 @@ library(viridis)
 
 ## Overview
 
-* Teaching: X min
-* Exercises: X min
+* Teaching: 20 min
+* Exercises: 5 min
 
 
 ## What is a mesh? 

@@ -52,6 +52,10 @@ The main contenders in this space are:
   
 Mozilla's A-Frame has the largest and most active group of users.
 
+A-Frame shares features in common with an older framework called
+[X3dom](https://www.x3dom.org/) which is successor to [VRML](https://en.wikipedia.org/wiki/VRML), the original
+declarative framework for VR on the web from the 90's. However, [an important architectural difference makes A-Frame more flexible](http://ngokevin.com/blog/aframe-vs-3dml/).
+
 ## Check out A-Frame {.exercise}
 
 1. On your laptop, Navigate your browser to https://aframe.io
