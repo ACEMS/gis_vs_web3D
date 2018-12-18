@@ -470,3 +470,4 @@ scene <- a_scene(.template = "basic_map",
 scene$serve()
 
 a_kill_all_scenes()
+```
