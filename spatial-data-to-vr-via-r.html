@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Generalising spatial data to 3D and VR</title>
   <meta name="description" content="Moving from spatial to 3D to VR using R">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Generalising spatial data to 3D and VR" />
   <meta property="og:type" content="book" />
@@ -35,7 +35,6 @@
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -57,67 +56,41 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
@@ -211,21 +184,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html"><i class="fa fa-check"></i><b>8</b> Transforming spatial data to 3D forms</a><ul>
 <li class="chapter" data-level="8.1" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#questions-5"><i class="fa fa-check"></i><b>8.1</b> Questions</a></li>
-<li class="chapter" data-level="8.2" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#transforming-spatial-data-using-modular-3d-tools"><i class="fa fa-check"></i><b>8.2</b> Transforming Spatial Data using modular 3D tools</a></li>
-<li class="chapter" data-level="8.3" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#on-cran"><i class="fa fa-check"></i><b>8.3</b> On CRAN</a></li>
-<li class="chapter" data-level="8.4" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#quadmesh."><i class="fa fa-check"></i><b>8.4</b> Quadmesh.</a></li>
-<li class="chapter" data-level="8.5" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#stuff-not-on-cran"><i class="fa fa-check"></i><b>8.5</b> Stuff not on CRAN!</a></li>
-<li class="chapter" data-level="8.6" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#triangles-or-quads-in-hypertidy-wip"><i class="fa fa-check"></i><b>8.6</b> Triangles or quads in hypertidy (WIP)</a></li>
+<li class="chapter" data-level="8.2" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#overview-5"><i class="fa fa-check"></i><b>8.2</b> Overview</a></li>
+<li class="chapter" data-level="8.3" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#transforming-spatial-data-using-modular-3d-tools"><i class="fa fa-check"></i><b>8.3</b> Transforming Spatial Data using modular 3D tools</a></li>
+<li class="chapter" data-level="8.4" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#on-cran"><i class="fa fa-check"></i><b>8.4</b> On CRAN</a></li>
+<li class="chapter" data-level="8.5" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#quadmesh."><i class="fa fa-check"></i><b>8.5</b> Quadmesh.</a></li>
+<li class="chapter" data-level="8.6" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#stuff-not-on-cran"><i class="fa fa-check"></i><b>8.6</b> Stuff not on CRAN!</a></li>
+<li class="chapter" data-level="8.7" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#triangles-or-quads-in-hypertidy-wip"><i class="fa fa-check"></i><b>8.7</b> Triangles or quads in hypertidy (WIP)</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html"><i class="fa fa-check"></i><b>9</b> Spatial Data to VR via R</a><ul>
-<li class="chapter" data-level="9.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#motivation"><i class="fa fa-check"></i><b>9.1</b> Motivation</a></li>
-<li class="chapter" data-level="9.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r-to-vr"><i class="fa fa-check"></i><b>9.2</b> R to VR</a><ul>
-<li class="chapter" data-level="9.2.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-hello-world"><i class="fa fa-check"></i><b>9.2.1</b> r2vr Hello World</a></li>
-<li class="chapter" data-level="9.2.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-tips"><i class="fa fa-check"></i><b>9.2.2</b> R2VR tips</a></li>
+<li class="chapter" data-level="9.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#questions-6"><i class="fa fa-check"></i><b>9.1</b> Questions</a></li>
+<li class="chapter" data-level="9.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#overview-6"><i class="fa fa-check"></i><b>9.2</b> Overview</a></li>
+<li class="chapter" data-level="9.3" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#motivation"><i class="fa fa-check"></i><b>9.3</b> Motivation</a></li>
+<li class="chapter" data-level="9.4" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r-to-vr"><i class="fa fa-check"></i><b>9.4</b> R to VR</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-hello-world"><i class="fa fa-check"></i><b>9.4.1</b> r2vr Hello World</a></li>
+<li class="chapter" data-level="9.4.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-tips"><i class="fa fa-check"></i><b>9.4.2</b> R2VR tips</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#spatial-data-in-vr"><i class="fa fa-check"></i><b>9.3</b> Spatial data in VR</a><ul>
-<li class="chapter" data-level="9.3.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#dem-raster-to-vr"><i class="fa fa-check"></i><b>9.3.1</b> DEM raster to VR</a></li>
-<li class="chapter" data-level="9.3.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#plotting-vr-elements-over-a-spatial-mesh"><i class="fa fa-check"></i><b>9.3.2</b> Plotting VR elements over a spatial mesh</a></li>
+<li class="chapter" data-level="9.5" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#spatial-data-in-vr"><i class="fa fa-check"></i><b>9.5</b> Spatial data in VR</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#dem-raster-to-vr"><i class="fa fa-check"></i><b>9.5.1</b> DEM raster to VR</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -247,16 +222,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="spatial-data-to-vr-via-r" class="section level1">
 <h1><span class="header-section-number">9</span> Spatial Data to VR via R</h1>
+<div id="questions-6" class="section level2">
+<h2><span class="header-section-number">9.1</span> Questions</h2>
 <ul>
 <li>How do I create an A-Frame scene with R?</li>
 <li>What kinds of data can we represent in A-Frame?</li>
 <li>How do I render spatial data in VR?</li>
 </ul>
+</div>
+<div id="overview-6" class="section level2">
+<h2><span class="header-section-number">9.2</span> Overview</h2>
+<p>Teaching: 30min Exercises: 5min</p>
+</div>
 <div id="motivation" class="section level2">
-<h2><span class="header-section-number">9.1</span> Motivation</h2>
-<p>So now you’ve had a taste of the A-Frame framework and marshalling spatial data to 3D in R
-you’re in better position to undstand why defining VR scenes from R is a
-beneficial thing. Before this capability existed the workflow for VR scenes was roughly this:</p>
+<h2><span class="header-section-number">9.3</span> Motivation</h2>
+<p>So now you’ve had a taste of the A-Frame framework and marshalling spatial data to 3D in R you’re in better position to undstand why defining VR scenes from R is a beneficial thing. Before this capability existed the workflow for VR scenes was roughly this:</p>
 <p>Repeat until ‘done’:</p>
 <ol style="list-style-type: decimal">
 <li>Build 3D models and JSON data in R for export to VR</li>
@@ -264,30 +244,14 @@ beneficial thing. Before this capability existed the workflow for VR scenes was 
 <li>Serve scene</li>
 <li>Discover limitation or bug</li>
 </ol>
-<p>The process is naturally iterative but the speed of iteration is frustratingly
-slow due to context switching from the R environment to Web environment. It also
-leads to a nasty anti-pattern where data names and calculation results from
-R make their way into web land as magical constants, slowing the process
-even further when these need to change.</p>
+<p>The process is naturally iterative but the speed of iteration is frustratingly slow due to context switching from the R environment to Web environment. It also leads to a nasty anti-pattern where data names and calculation results from R make their way into web land as magical constants, slowing the process even further when these need to change.</p>
 </div>
 <div id="r-to-vr" class="section level2">
-<h2><span class="header-section-number">9.2</span> R to VR</h2>
-<p>The tools that exist in R allow you to mix R code with the VR abstraction
-provided by A-Frame. They do not provide a higher level abstraction. To use an R
-analogy:</p>
-<p><code>grid</code> is a low level graphics framework that gives you the power to draw
-anything you can imagine using 2D geometric primitives. It is up to you write
-functions that map your data to those primitives. <code>ggplot2</code> is a popular
-visualisation package that does exactly this.</p>
-<p>If you’re using VR tools in R you’re going to be working with low level VR
-primitives. Do not expect <code>ggplot2</code> level magic. A typical scene will be hundreds
-of lines of code, as opposed to say tens with <code>ggplot2</code>. The saving grace is
-that most of those lines of code will be about declaring simple primitive
-objects and interactions which are not overly complex.</p>
-<p>This is a natural situation since the domain of VR visualisations is not well
-understood right now. Through working with VR you will begin to see the common
-tasks important to your domain and if we’re lucky you might even write a package
-to help others do them.</p>
+<h2><span class="header-section-number">9.4</span> R to VR</h2>
+<p>The tools that exist in R allow you to mix R code with the VR abstraction provided by A-Frame. They do not provide a higher level abstraction. To use an R analogy:</p>
+<p><code>grid</code> is a low level graphics framework that gives you the power to draw anything you can imagine using 2D geometric primitives. It is up to you write functions that map your data to those primitives. <code>ggplot2</code> is a popular visualisation package that does exactly this.</p>
+<p>If you’re using VR tools in R you’re going to be working with low level VR primitives. Do not expect <code>ggplot2</code> level magic. A typical scene will be hundreds of lines of code, as opposed to say tens with <code>ggplot2</code>. The saving grace is that most of those lines of code will be about declaring simple primitive objects and interactions which are not overly complex.</p>
+<p>This is a natural situation since the domain of VR visualisations is not well understood right now. Through working with VR you will begin to see the common tasks important to your domain and if we’re lucky you might even write a package to help others do them.</p>
 <p>There are currently two packages that allow you create A-Frame scenes in R:</p>
 <ul>
 <li><a href="https://github.com/milesmcbain/r2vr">r2vr</a> - used in this workshop</li>
@@ -295,12 +259,11 @@ to help others do them.</p>
 </ul>
 <p>They have different capabilities, APIs, and are not interoperable.</p>
 <div id="r2vr-hello-world" class="section level3">
-<h3><span class="header-section-number">9.2.1</span> r2vr Hello World</h3>
-<p>Here’s a familiar scene constructed with <code>r2vr</code>, we’ll build some simpler
-examples soon, this is just to compare and contrast the syntax:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr)
+<h3><span class="header-section-number">9.4.1</span> r2vr Hello World</h3>
+<p>Here’s a familiar scene constructed with <code>r2vr</code>, we’ll build some simpler examples soon, this is just to compare and contrast the syntax:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr)
 
-<span class="co">## Configure scene</span>
+## Configure scene
 
 js_libs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js&quot;</span>,
                 <span class="st">&quot;https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js&quot;</span>
@@ -362,11 +325,11 @@ hello_world_scene &lt;-<span class="st"> </span><span class="kw">a_scene</span>(
                                               floor, backboard, sky),
                              <span class="dt">.js_sources =</span> js_libs)
 
-<span class="co">## Serve a scene</span>
+## Serve a scene
 hello_world_scene<span class="op">$</span><span class="kw">serve</span>()
 
-<span class="co">## Stop serving a scene</span>
-hello_world_scene<span class="op">$</span><span class="kw">stop</span>()</code></pre>
+## Stop serving a scene
+hello_world_scene<span class="op">$</span><span class="kw">stop</span>()</code></pre></div>
 <p>This is the equivalent A-Frame scene: <a href="https://glitch.com/edit/#!/pricey-kitten" class="uri">https://glitch.com/edit/#!/pricey-kitten</a></p>
 <p>Things to note:</p>
 <ul>
@@ -378,24 +341,20 @@ hello_world_scene<span class="op">$</span><span class="kw">stop</span>()</code><
 </ul>
 </div>
 <div id="r2vr-tips" class="section level3">
-<h3><span class="header-section-number">9.2.2</span> R2VR tips</h3>
+<h3><span class="header-section-number">9.4.2</span> R2VR tips</h3>
 <p><code>r2vr</code> is an A-Frame html code generator and server that users 3 main R6 classes created with <code>a_entity()</code>, <code>a_asset()</code> and <code>a_scene()</code>. You can view the HTML associated with these objects by calling their <code>render()</code> method. eg:</p>
 </div>
 </div>
 <div id="spatial-data-in-vr" class="section level2">
-<h2><span class="header-section-number">9.3</span> Spatial data in VR</h2>
+<h2><span class="header-section-number">9.5</span> Spatial data in VR</h2>
 <p>The type of work we will consider is making and plotting over 3D meshes. Recapping from the previous Act, the data types that are useful for this are:</p>
 <ul>
-<li>Rasters
-<ul>
+<li>Rasters</li>
 <li>Digital Elevation Modes give us mesh heights,</li>
 <li>Images can give us textures</li>
 <li>Model output to shade meshes</li>
-</ul></li>
-<li>Simple features collections
-<ul>
+<li>Simple features collections</li>
 <li>Giving us shapes for mesh boundaries</li>
-</ul></li>
 </ul>
 <p>The R packages we will use to get these data into VR are:</p>
 <ul>
@@ -407,32 +366,31 @@ hello_world_scene<span class="op">$</span><span class="kw">stop</span>()</code><
 <li><code>r2vr</code></li>
 </ul>
 <div id="dem-raster-to-vr" class="section level3">
-<h3><span class="header-section-number">9.3.1</span> DEM raster to VR</h3>
+<h3><span class="header-section-number">9.5.1</span> DEM raster to VR</h3>
 <p>For this example we will use a DEM dataset from Uluṟu-Kata Tut National Park.</p>
 <div id="load-raster" class="section level4">
-<h4><span class="header-section-number">9.3.1.1</span> Load Raster</h4>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
+<h4><span class="header-section-number">9.5.1.1</span> Load Raster</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
 <span class="kw">library</span>(quadmesh)
 
 uluru_raster &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="st">&quot;./data/ELVIS_CLIP.tif&quot;</span>)
 
 <span class="kw">plot</span>(uluru_raster)
 <span class="kw">crs</span>(uluru_raster)
-<span class="co">## CRS arguments:</span>
-<span class="co">## +proj=lcc +lat_1=-30 +lat_2=-20 +lat_0=-25 +lon_0=135 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 </span></code></pre>
+## CRS arguments:
+## +proj=lcc +lat_1=-30 +lat_2=-20 +lat_0=-25 +lon_0=135 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 </code></pre></div>
 <p><strong>Check:</strong> Does the raster have <code>units=m</code>?</p>
 <ul>
-<li>When we port the mesh to VR we want it to
-have units of meters since this is VCR’s native unit. Consider re-projecting if need be.</li>
+<li>When we port the mesh to VR we want it to have units of meters since this is VCR’s native unit. Consider re-projecting if need be.</li>
 </ul>
 </div>
 <div id="crop-raster" class="section level4">
-<h4><span class="header-section-number">9.3.1.2</span> Crop Raster</h4>
+<h4><span class="header-section-number">9.5.1.2</span> Crop Raster</h4>
 <p>We’ll be doing a smaller section to make things faster</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr.gis)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr.gis)
 <span class="kw">library</span>(sf)
 
-<span class="co">### coords come from a google map: https://drive.google.com/open?id=1Ak26Hyx1R-f2QjPCTK0rQLye5xcHyE8n&amp;usp=sharing</span>
+### coords come from a google map: https://drive.google.com/open?id=1Ak26Hyx1R-f2QjPCTK0rQLye5xcHyE8n&amp;usp=sharing
 
 uluru_bbox &lt;-
 <span class="st">  </span><span class="kw">st_bbox</span>(<span class="kw">c</span>(<span class="dt">xmin =</span> <span class="fl">131.02084</span>,
@@ -441,48 +399,41 @@ uluru_bbox &lt;-
             <span class="dt">ymax =</span> <span class="fl">-25.33568</span>),
           <span class="dt">crs =</span> <span class="kw">st_crs</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84&quot;</span>))
  
- uluru_raster &lt;-<span class="st"> </span><span class="kw">raster_crop_bbox</span>(uluru_raster, uluru_bbox)</code></pre>
+ uluru_raster &lt;-<span class="st"> </span><span class="kw">raster_crop_bbox</span>(uluru_raster, uluru_bbox)</code></pre></div>
 </div>
 <div id="make-triangular-mesh" class="section level4">
-<h4><span class="header-section-number">9.3.1.3</span> Make Triangular Mesh</h4>
-<p>We build a mesh using <code>quadmesh</code> and then cut each face in half so that it is a
-triangular mesh. A-Frame models can only have triangular faces.</p>
-<pre class="sourceCode r"><code class="sourceCode r">uluru_mesh &lt;-<span class="st"> </span><span class="kw">quadmesh</span>(uluru_raster)
+<h4><span class="header-section-number">9.5.1.3</span> Make Triangular Mesh</h4>
+<p>We build a mesh using <code>quadmesh</code> and then cut each face in half so that it is a triangular mesh. A-Frame models can only have triangular faces.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">uluru_mesh &lt;-<span class="st"> </span><span class="kw">quadmesh</span>(uluru_raster)
 rgl<span class="op">::</span><span class="kw">shade3d</span>(uluru_mesh)
-<span class="co">## looks good?</span>
+## looks good?
 
-<span class="co">## quadmesh::triangulate quads will make a mesh that VR thinks is inside out.</span>
-<span class="co">## This will be fixed in future.</span>
+## quadmesh::triangulate quads will make a mesh that VR thinks is inside out.
+## This will be fixed in future.
 
-uluru_trimesh_indices &lt;-<span class="st"> </span><span class="kw">triangulate_quads</span>(uluru_mesh<span class="op">$</span>ib, <span class="dt">clockwise =</span> <span class="ot">FALSE</span>)</code></pre>
+uluru_trimesh_indices &lt;-<span class="st"> </span><span class="kw">triangulate_quads</span>(uluru_mesh<span class="op">$</span>ib, <span class="dt">clockwise =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>We now have the pieces of a triangular mesh.</p>
 <ul>
 <li><code>uluru_mesh$vb</code> - are the mesh vertices and are actual points in space.</li>
 <li><code>uluru_trimesh_indicies</code> - are indices into the vertices that describe triangles.</li>
 </ul>
-<p>Because we had the quad mesh expressed in this primitive form the transformation
-could be made without creating any additional vertices. They are re-used for
-triangles.</p>
+<p>Because we had the quad mesh expressed in this primitive form the transformation could be made without creating any additional vertices. They are re-used for triangles.</p>
 </div>
 <div id="export-to-3d-model-format" class="section level4">
-<h4><span class="header-section-number">9.3.1.4</span> Export to 3D model format</h4>
-<p>The 3D model format we will use is a JSON format supported by three.js but not
-A-Frame natively. <code>r2vr</code> will take care of loading the 3rd party javascript
-necessary to use models of this type.</p>
-<p>When <a href="https://www.khronos.org/gltf/">gltf</a> support comes to R, that would be
-preferred, but until then this is what we have.</p>
-<p>Notice the use of <code>t()</code>. The VR tools expect columns of x, y, z coordinates
-while <code>rgl</code> and <code>quadmesh</code> work in rows.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+<h4><span class="header-section-number">9.5.1.4</span> Export to 3D model format</h4>
+<p>The 3D model format we will use is a JSON format supported by three.js but not A-Frame natively. <code>r2vr</code> will take care of loading the 3rd party javascript necessary to use models of this type.</p>
+<p>When <a href="https://www.khronos.org/gltf/">gltf</a> support comes to R, that would be preferred, but until then this is what we have.</p>
+<p>Notice the use of <code>t()</code>. The VR tools expect columns of x, y, z coordinates while <code>rgl</code> and <code>quadmesh</code> work in rows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 
 uluru_json &lt;-<span class="st"> </span><span class="kw">trimesh_to_threejson</span>(<span class="dt">vertices =</span> <span class="kw">t</span>(uluru_mesh<span class="op">$</span>vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, ]),
                                    <span class="dt">face_vertices =</span> <span class="kw">t</span>(uluru_trimesh_indices))
 
-<span class="kw">write_file</span>(uluru_json, <span class="st">&quot;uluru.json&quot;</span>)</code></pre>
+<span class="kw">write_file</span>(uluru_json, <span class="st">&quot;uluru.json&quot;</span>)</code></pre></div>
 </div>
 <div id="render-in-a-frame" class="section level4">
-<h4><span class="header-section-number">9.3.1.5</span> Render in A-Frame</h4>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr)
+<h4><span class="header-section-number">9.5.1.5</span> Render in A-Frame</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(r2vr)
 
 uluru_asset &lt;-<span class="st"> </span><span class="kw">a_asset</span>(<span class="dt">id =</span> <span class="st">&quot;uluru&quot;</span>, <span class="dt">src =</span> <span class="st">&quot;uluru.json&quot;</span>)
 
@@ -491,18 +442,15 @@ uluru_model &lt;-<span class="st"> </span><span class="kw">a_json_model</span>(<
 scene &lt;-<span class="st"> </span><span class="kw">a_scene</span>(<span class="dt">.template =</span> <span class="st">&quot;basic_map&quot;</span>,
                  <span class="dt">.children =</span> <span class="kw">list</span>(uluru_model))
 scene<span class="op">$</span><span class="kw">serve</span>()
-<span class="co">## Fire started at 127.0.0.1:8080</span>
+## Fire started at 127.0.0.1:8080
 
-<span class="kw">a_kill_all_scenes</span>()</code></pre>
+<span class="kw">a_kill_all_scenes</span>()</code></pre></div>
 <p>If you navigate to <code>127.0.0.1:8080</code> in your browser you should see the scene being served. You can try it on your phone as well but you need to use your computer’s public IP scene$serve:</p>
 <pre><code>scene$serve(host = &quot;&lt;YOUR_IP&gt;&quot;)</code></pre>
-<p>If things are working you should see a scene empty but for a grey grid. This
-grid is part of the <code>&quot;basic_map&quot;</code> template - it is added in automatically. It’s a
-visual reference as each square is 1x1 VR meters. It also let’s you know that
-things are ‘working’ - although Uluru is not visible at the moment.</p>
+<p>If things are working you should see a scene empty but for a grey grid. This grid is part of the <code>&quot;basic_map&quot;</code> template - it is added in automatically. It’s a visual reference as each square is 1x1 VR meters. It also let’s you know that things are ‘working’ - although Uluru is not visible at the moment.</p>
 </div>
 <div id="find-uluru" class="section level4 exercise">
-<h4><span class="header-section-number">9.3.1.6</span> Find Uluru</h4>
+<h4><span class="header-section-number">9.5.1.6</span> Find Uluru</h4>
 <p>We’ve imported a full scale model of Uluru in VR but we can’t see it just yet.</p>
 <ol style="list-style-type: decimal">
 <li>Use the A-Frame inspector to find an appropriate, <code>scale</code>, <code>position</code>, <code>rotation</code>, and <code>color</code>, to view the model.</li>
@@ -510,11 +458,9 @@ things are ‘working’ - although Uluru is not visible at the moment.</p>
 <p>Notice the position of the mesh, what does it say about how the coordinates have been transformed?</p>
 </div>
 <div id="setting-the-position-and-scale" class="section level4">
-<h4><span class="header-section-number">9.3.1.7</span> Setting the position and scale</h4>
-<p>From the previous exercise we learned that the model was too large to practically
-view, was rotated with it’s z-axis pointing toward camera, and had been centred.</p>
-<p>To keep it spatially referenced, it’s a good idea to set up some constants
-relating to transforming the model to VR for example:</p>
+<h4><span class="header-section-number">9.5.1.7</span> Setting the position and scale</h4>
+<p>From the previous exercise we learned that the model was too large to practically view, was rotated with it’s z-axis pointing toward camera, and had been centred.</p>
+<p>To keep it spatially referenced, it’s a good idea to set up some constants relating to transforming the model to VR for example:</p>
 <ul>
 <li><code>scale_factor</code>
 <ul>
@@ -532,7 +478,7 @@ relating to transforming the model to VR for example:</p>
 </ul></li>
 </ul>
 <p>We define these and view the result:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Model constants</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Model constants
 scale_factor &lt;-<span class="st"> </span><span class="fl">0.01</span>
 
 mesh_centre &lt;-<span class="st"> </span><span class="kw">colMeans</span>(<span class="kw">t</span>(uluru_mesh<span class="op">$</span>vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]))
@@ -546,7 +492,7 @@ lowest_corner &lt;-<span class="st"> </span><span class="kw">min</span>(raster<s
 
 height_correction &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, mesh_centre[<span class="dv">3</span>] <span class="op">-</span><span class="st"> </span>lowest_corner, <span class="dv">0</span>)
 
-<span class="co">## Scene definition</span>
+## Scene definition
 uluru_asset &lt;-<span class="st"> </span><span class="kw">a_asset</span>(<span class="dt">id =</span> <span class="st">&quot;uluru&quot;</span>, <span class="dt">src =</span> <span class="st">&quot;uluru.json&quot;</span>, <span class="dt">.parts =</span> <span class="st">&quot;uluru.png&quot;</span>)
 
 uluru_model &lt;-<span class="st"> </span><span class="kw">a_json_model</span>(<span class="dt">src =</span> uluru_asset,
@@ -559,20 +505,20 @@ scene &lt;-<span class="st"> </span><span class="kw">a_scene</span>(<span class=
                  <span class="dt">.children =</span> <span class="kw">list</span>(uluru_model))
 scene<span class="op">$</span><span class="kw">serve</span>()
 
-<span class="kw">a_kill_all_scenes</span>()</code></pre>
+<span class="kw">a_kill_all_scenes</span>()</code></pre></div>
 <p>It’s taking shape! But we can do better than plain brown.</p>
 </div>
 <div id="texturing-using-satellite-imagery" class="section level4">
-<h4><span class="header-section-number">9.3.1.8</span> Texturing using satellite imagery</h4>
+<h4><span class="header-section-number">9.5.1.8</span> Texturing using satellite imagery</h4>
 <p>We can use images to texture our mesh. This uses work we have done recently to make getting tiles from tile servers easier in R. The high level workflow is:</p>
 <ol style="list-style-type: decimal">
 <li>Fetch and composite satellite tiles for the mesh bounding box.</li>
 <li>Rebuild mesh with <code>quadmesh</code> texture args, and export the model to supplying the texture coordinates with a reference to the texture image.</li>
 </ol>
 <div id="fetch-texture-image" class="section level5">
-<h5><span class="header-section-number">9.3.1.8.1</span> Fetch texture image</h5>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">## Fetch textures from ESRI maps</span>
-<span class="co">## from slippymath README:</span>
+<h5><span class="header-section-number">9.5.1.8.1</span> Fetch texture image</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Fetch textures from ESRI maps
+## from slippymath README:
 <span class="kw">library</span>(purrr)
 <span class="kw">library</span>(curl)
 <span class="kw">library</span>(glue)
@@ -593,7 +539,7 @@ images &lt;-
        },
        <span class="dt">zoom =</span> tile_grid<span class="op">$</span>zoom)
 
-<span class="co">## Create a new textured quamesh and export it to JSON</span>
+## Create a new textured quamesh and export it to JSON
 raster_out &lt;-<span class="st"> </span><span class="kw">tg_composite</span>(tile_grid, images)
 
 <span class="kw">raster_to_png</span>(raster_out, <span class="st">&quot;uluru.png&quot;</span>)
@@ -609,27 +555,26 @@ uluru_json &lt;-<span class="st"> </span><span class="kw">trimesh_to_threejson</
 
 <span class="kw">write_file</span>(uluru_json, <span class="st">&quot;uluru.json&quot;</span>)
 
-<span class="co">## Scene definition</span>
+## Scene definition
 uluru_asset &lt;-<span class="st"> </span><span class="kw">a_asset</span>(<span class="dt">id =</span> <span class="st">&quot;uluru&quot;</span>, <span class="dt">src =</span> <span class="st">&quot;uluru.json&quot;</span>, <span class="dt">.parts =</span> <span class="st">&quot;uluru.png&quot;</span>)
 
 uluru_model &lt;-<span class="st"> </span><span class="kw">a_json_model</span>(<span class="dt">src =</span> uluru_asset,
                             <span class="dt">scale =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>) <span class="op">*</span><span class="st"> </span>scale_factor,
                             <span class="dt">position =</span> (<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">-5</span>) <span class="op">+</span><span class="st"> </span>height_correction) <span class="op">*</span><span class="st"> </span>scale_factor,
-                            <span class="dt">rotation =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>))
+                            <span class="dt">rotation =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>),
+                            <span class="dt">mesh_smooth =</span> <span class="ot">TRUE</span>)
 scene &lt;-<span class="st"> </span><span class="kw">a_scene</span>(<span class="dt">.template =</span> <span class="st">&quot;basic_map&quot;</span>,
                  <span class="dt">.children =</span> <span class="kw">list</span>(uluru_model))
 scene<span class="op">$</span><span class="kw">serve</span>()
 
-<span class="kw">a_kill_all_scenes</span>()</code></pre>
+<span class="kw">a_kill_all_scenes</span>()</code></pre></div>
 </div>
 </div>
 <div id="shading-using-data" class="section level4">
-<h4><span class="header-section-number">9.3.1.9</span> Shading using data</h4>
-<p>In this section we look at shading the mesh with an arbitrary raster. This could
-represent the output of a spatial model.</p>
-<p>We first generate a raster using a noise generator, we then use it to texture
-the mesh.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ambient)
+<h4><span class="header-section-number">9.5.1.9</span> Shading using data</h4>
+<p>In this section we look at shading the mesh with an arbitrary raster. This could represent the output of a spatial model.</p>
+<p>We first generate a raster using a noise generator, we then use it to texture the mesh.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ambient)
 <span class="kw">library</span>(scico)
 
 noise &lt;-
@@ -659,31 +604,25 @@ mesh_json &lt;-
 <span class="st">  </span><span class="kw">trimesh_to_threejson</span>(<span class="dt">vertices =</span> <span class="kw">t</span>(uluru_mesh<span class="op">$</span>vb[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]),
                        <span class="dt">face_vertices =</span> <span class="kw">t</span>(uluru_trimesh_indices),
                        <span class="dt">colours =</span> vertex_colour_data<span class="op">$</span>colours,
-                       <span class="dt">face_vertex_colours =</span> face_colours)
+                       <span class="dt">face_vertex_colours =</span> face_colours,
+                       <span class="dt">transparency =</span> <span class="fl">0.4</span>)
 
 
-<span class="co">## Scene definition</span>
+## Scene definition
 uluru_asset_mod &lt;-<span class="st"> </span><span class="kw">a_in_mem_asset</span>(<span class="dt">id =</span> <span class="st">&quot;uluru_mod&quot;</span>, <span class="dt">src =</span> <span class="st">&quot;uluru_mod.json&quot;</span>, <span class="dt">.data =</span> mesh_json)
 
 uluru_model2 &lt;-<span class="st"> </span><span class="kw">a_json_model</span>(<span class="dt">src =</span> uluru_asset_mod,
-                            <span class="dt">material =</span> <span class="kw">list</span>(<span class="dt">src =</span> uluru_asset_mod, <span class="dt">opacity =</span> <span class="fl">0.5</span>),
                             <span class="dt">scale =</span> <span class="kw">c</span>(<span class="fl">1.001</span>, <span class="fl">1.001</span>, <span class="fl">1.001</span>) <span class="op">*</span><span class="st"> </span>scale_factor,
-                            <span class="dt">position =</span> (<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">-5</span>) <span class="op">+</span><span class="st"> </span>height_correction) <span class="op">*</span><span class="st"> </span>scale_factor,
+                            <span class="dt">position =</span> ((<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">-5</span>) <span class="op">+</span><span class="st"> </span>height_correction) <span class="op">*</span><span class="st"> </span>scale_factor) <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.01</span>, <span class="dv">0</span>),
                             <span class="dt">rotation =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">90</span>, <span class="dv">0</span>, <span class="dv">0</span>))
 
 scene &lt;-<span class="st"> </span><span class="kw">a_scene</span>(<span class="dt">.template =</span> <span class="st">&quot;basic_map&quot;</span>,
-                 <span class="dt">.children =</span> <span class="kw">list</span>(uluru_model2))
+                 <span class="dt">.children =</span> <span class="kw">list</span>(uluru_model, uluru_model2))
 scene<span class="op">$</span><span class="kw">serve</span>()
 
-<span class="kw">a_kill_all_scenes</span>()</code></pre>
-</div>
-</div>
-<div id="plotting-vr-elements-over-a-spatial-mesh" class="section level3">
-<h3><span class="header-section-number">9.3.2</span> Plotting VR elements over a spatial mesh</h3>
-<pre class="sourceCode r"><code class="sourceCode r">kangaroo &lt;-<span class="st"> </span><span class="kw">a_asset</span>(<span class="dt">id =</span> <span class="st">&quot;kangaroo&quot;</span>,
-        <span class="dt">src =</span> <span class="kw">test_path</span>(<span class="st">&quot;data/kangaroo_01.gltf&quot;</span>),
-        <span class="dt">.parts =</span> <span class="kw">test_path</span>(<span class="st">&quot;data/Kangaroo_01.bin&quot;</span>))</code></pre>
+<span class="kw">a_kill_all_scenes</span>()</code></pre></div>
 
+</div>
 </div>
 </div>
 </div>

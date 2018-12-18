@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Generalising spatial data to 3D and VR</title>
   <meta name="description" content="Moving from spatial to 3D to VR using R">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Generalising spatial data to 3D and VR" />
   <meta property="og:type" content="book" />
@@ -35,7 +35,6 @@
 <link rel="next" href="developing-with-a-frame.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -57,67 +56,41 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
@@ -211,21 +184,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html"><i class="fa fa-check"></i><b>8</b> Transforming spatial data to 3D forms</a><ul>
 <li class="chapter" data-level="8.1" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#questions-5"><i class="fa fa-check"></i><b>8.1</b> Questions</a></li>
-<li class="chapter" data-level="8.2" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#transforming-spatial-data-using-modular-3d-tools"><i class="fa fa-check"></i><b>8.2</b> Transforming Spatial Data using modular 3D tools</a></li>
-<li class="chapter" data-level="8.3" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#on-cran"><i class="fa fa-check"></i><b>8.3</b> On CRAN</a></li>
-<li class="chapter" data-level="8.4" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#quadmesh."><i class="fa fa-check"></i><b>8.4</b> Quadmesh.</a></li>
-<li class="chapter" data-level="8.5" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#stuff-not-on-cran"><i class="fa fa-check"></i><b>8.5</b> Stuff not on CRAN!</a></li>
-<li class="chapter" data-level="8.6" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#triangles-or-quads-in-hypertidy-wip"><i class="fa fa-check"></i><b>8.6</b> Triangles or quads in hypertidy (WIP)</a></li>
+<li class="chapter" data-level="8.2" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#overview-5"><i class="fa fa-check"></i><b>8.2</b> Overview</a></li>
+<li class="chapter" data-level="8.3" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#transforming-spatial-data-using-modular-3d-tools"><i class="fa fa-check"></i><b>8.3</b> Transforming Spatial Data using modular 3D tools</a></li>
+<li class="chapter" data-level="8.4" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#on-cran"><i class="fa fa-check"></i><b>8.4</b> On CRAN</a></li>
+<li class="chapter" data-level="8.5" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#quadmesh."><i class="fa fa-check"></i><b>8.5</b> Quadmesh.</a></li>
+<li class="chapter" data-level="8.6" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#stuff-not-on-cran"><i class="fa fa-check"></i><b>8.6</b> Stuff not on CRAN!</a></li>
+<li class="chapter" data-level="8.7" data-path="transforming-spatial-data-to-3d-forms.html"><a href="transforming-spatial-data-to-3d-forms.html#triangles-or-quads-in-hypertidy-wip"><i class="fa fa-check"></i><b>8.7</b> Triangles or quads in hypertidy (WIP)</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html"><i class="fa fa-check"></i><b>9</b> Spatial Data to VR via R</a><ul>
-<li class="chapter" data-level="9.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#motivation"><i class="fa fa-check"></i><b>9.1</b> Motivation</a></li>
-<li class="chapter" data-level="9.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r-to-vr"><i class="fa fa-check"></i><b>9.2</b> R to VR</a><ul>
-<li class="chapter" data-level="9.2.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-hello-world"><i class="fa fa-check"></i><b>9.2.1</b> r2vr Hello World</a></li>
-<li class="chapter" data-level="9.2.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-tips"><i class="fa fa-check"></i><b>9.2.2</b> R2VR tips</a></li>
+<li class="chapter" data-level="9.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#questions-6"><i class="fa fa-check"></i><b>9.1</b> Questions</a></li>
+<li class="chapter" data-level="9.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#overview-6"><i class="fa fa-check"></i><b>9.2</b> Overview</a></li>
+<li class="chapter" data-level="9.3" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#motivation"><i class="fa fa-check"></i><b>9.3</b> Motivation</a></li>
+<li class="chapter" data-level="9.4" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r-to-vr"><i class="fa fa-check"></i><b>9.4</b> R to VR</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-hello-world"><i class="fa fa-check"></i><b>9.4.1</b> r2vr Hello World</a></li>
+<li class="chapter" data-level="9.4.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#r2vr-tips"><i class="fa fa-check"></i><b>9.4.2</b> R2VR tips</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#spatial-data-in-vr"><i class="fa fa-check"></i><b>9.3</b> Spatial data in VR</a><ul>
-<li class="chapter" data-level="9.3.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#dem-raster-to-vr"><i class="fa fa-check"></i><b>9.3.1</b> DEM raster to VR</a></li>
-<li class="chapter" data-level="9.3.2" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#plotting-vr-elements-over-a-spatial-mesh"><i class="fa fa-check"></i><b>9.3.2</b> Plotting VR elements over a spatial mesh</a></li>
+<li class="chapter" data-level="9.5" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#spatial-data-in-vr"><i class="fa fa-check"></i><b>9.5</b> Spatial data in VR</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="spatial-data-to-vr-via-r.html"><a href="spatial-data-to-vr-via-r.html#dem-raster-to-vr"><i class="fa fa-check"></i><b>9.5.1</b> DEM raster to VR</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -263,8 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="anatomy-of-an-a-frame-scene" class="section level2">
 <h2><span class="header-section-number">5.3</span> Anatomy of an A-Frame Scene</h2>
-<p>Let’s have a look at an example to get a feel for how an A-Frame scene hangs
-together.</p>
+<p>Let’s have a look at an example to get a feel for how an A-Frame scene hangs together.</p>
 <div id="open-an-a-frame-scene-on-glitch.com" class="section level3 exercise">
 <h3><span class="header-section-number">5.3.1</span> Open an A-Frame scene on glitch.com</h3>
 <ol style="list-style-type: decimal">
@@ -278,46 +252,39 @@ together.</p>
 <ol style="list-style-type: decimal">
 <li>In the left hand file pane click “index.html” to open the app source.</li>
 </ol>
-<p><em>What is glitch.com? Glitch is a social coding site that makes is easy to
-write and host JS web apps from within your browser. A lot of A-Frame
-introductory examples are hosted there.</em></p>
-<p>Ignoring the <em>solutions</em> directory, we see that the scene is primary composed of
-a single <code>index.html</code> file. There is one associated JavaScript file <code>spin.js</code>,
-the purpose of which will become clear soon.</p>
+<p><em>What is glitch.com? Glitch is a social coding site that makes is easy to write and host JS web apps from within your browser. A lot of A-Frame introductory examples are hosted there.</em></p>
+<p>Ignoring the <em>solutions</em> directory, we see that the scene is primary composed of a single <code>index.html</code> file. There is one associated JavaScript file <code>spin.js</code>, the purpose of which will become clear soon.</p>
 </div>
 <div id="the-header" class="section level3">
 <h3><span class="header-section-number">5.3.2</span> The header</h3>
-<pre class="sourceCode html"><code class="sourceCode html">  <span class="kw">&lt;head&gt;</span>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">  <span class="kw">&lt;head&gt;</span>
     <span class="kw">&lt;title&gt;</span>Hello, WebVR! - A-Frame<span class="kw">&lt;/title&gt;</span>
     <span class="kw">&lt;meta</span><span class="ot"> name=</span><span class="st">&quot;description&quot;</span><span class="ot"> content=</span><span class="st">&quot;Hello, WebVR! - A-Frame&quot;</span><span class="kw">&gt;</span>
     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;https://aframe.io/releases/0.8.0/aframe.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;spin.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
     <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>   
-  <span class="kw">&lt;/head&gt;</span></code></pre>
-<p>The header of an A-Frame scene is like a normal html web page. Within it we can
-define the scene title and metadata. Typically an A-Frame scene will have many
-script calls that load JS files. In this case:</p>
+  <span class="kw">&lt;/head&gt;</span></code></pre></div>
+<p>The header of an A-Frame scene is like a normal html web page. Within it we can define the scene title and metadata. Typically an A-Frame scene will have many script calls that load JS files. In this case:</p>
 <ul>
 <li><code>&quot;https://aframe.io/releases/0.8.0/aframe.min.js&quot;</code> is the A-Frame framework. Without it there is no VR</li>
 <li><code>&quot;spin.js&quot;</code> is a local JS file that contains a component called <code>spin</code></li>
 <li><code>&quot;https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js&quot;</code> is a 3rd party component included from a repository.</li>
 </ul>
-<p>So this is roughly analogous to declaring all your R packages with
-<code>library()</code> calls at the beginning of your script.</p>
+<p>So this is roughly analogous to declaring all your R packages with <code>library()</code> calls at the beginning of your script.</p>
 </div>
 <div id="the-scene" class="section level3">
 <h3><span class="header-section-number">5.3.3</span> The scene</h3>
 <p>Everything within the <code>a-scene</code> tag defines the items in the scene. There are two zones:</p>
 <div id="the-assets-block" class="section level4">
 <h4><span class="header-section-number">5.3.3.1</span> The assets block</h4>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;a-assets&gt;</span>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;a-assets&gt;</span>
   <span class="kw">&lt;img</span><span class="ot"> crossorigin=</span><span class="st">&quot;anonymous&quot;</span><span class="ot"> id=</span><span class="st">&quot;hadz&quot;</span><span class="ot"> src=</span><span class="st">&quot;https://cdn.glitch.com/aaf7e3b8-f72b-405d-a6dd-b5ba91c32622%2FJT_R_code.gif?1542275718299&quot;</span><span class="kw">&gt;&lt;/img&gt;</span>
-<span class="kw">&lt;/a-assets&gt;</span></code></pre>
+<span class="kw">&lt;/a-assets&gt;</span></code></pre></div>
 <p>The assets block is where media files are defined that need to be pre-loaded before the scene will be rendered. Each media file in the assets block is assigned an <code>id</code> that can be used to reference the asset as many times as required throughout the scene.</p>
 </div>
 <div id="the-entities" class="section level4">
 <h4><span class="header-section-number">5.3.3.2</span> The entities</h4>
-<pre class="sourceCode html"><code class="sourceCode html"><span class="co">&lt;!-- hadley box --&gt;</span>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html"><span class="co">&lt;!-- hadley box --&gt;</span>
 <span class="kw">&lt;a-box</span><span class="ot"> id</span> <span class="ot">=</span> <span class="st">&quot;important&quot;</span><span class="ot"> position=</span><span class="st">&quot;-1 0.5 -3&quot;</span><span class="ot"> rotation=</span><span class="st">&quot;0 45 0&quot;</span><span class="ot"> shadow</span> 
 <span class="ot">             spin</span> <span class="ot">=</span> <span class="st">&quot;axis: y; speed: 1.6&quot;</span><span class="ot"> scale=</span><span class="st">&quot;1 1 1&quot;</span><span class="ot">  src=</span><span class="st">&quot;#hadz&quot;</span><span class="kw">&gt;</span>
 <span class="kw">&lt;/a-box&gt;</span>
@@ -336,11 +303,8 @@ script calls that load JS files. In this case:</p>
 <span class="kw">&lt;a-plane</span><span class="ot"> position=</span><span class="st">&quot;0 2 -6&quot;</span><span class="ot"> rotation=</span><span class="st">&quot;0 0 0&quot;</span><span class="ot"> width=</span><span class="st">&quot;4&quot;</span><span class="ot"> height=</span><span class="st">&quot;4&quot;</span><span class="ot"> color=</span><span class="st">&quot;#7BC8A4&quot;</span><span class="ot"> shadow</span><span class="kw">&gt;&lt;/a-plane&gt;</span>
 
 <span class="co">&lt;!-- the background colour --&gt;</span>
-<span class="kw">&lt;a-sky</span><span class="ot"> color=</span><span class="st">&quot;#ECECEC&quot;</span><span class="kw">&gt;&lt;/a-sky&gt;</span></code></pre>
-<p>The objects that comprise the scene are called <strong>entities</strong>. Here they are
-defined by the tags <code>a-box</code>, <code>a-sphere</code>, <code>a-plane</code> etc. Within the entity tags,
-the attributes define configuration for components. This configuration is
-enclosed in quotes and can contain multiple <strong>properties</strong> e.g.: <code>spin = &quot;axis: y; speed: 1.6</code>.</p>
+<span class="kw">&lt;a-sky</span><span class="ot"> color=</span><span class="st">&quot;#ECECEC&quot;</span><span class="kw">&gt;&lt;/a-sky&gt;</span></code></pre></div>
+<p>The objects that comprise the scene are called <strong>entities</strong>. Here they are defined by the tags <code>a-box</code>, <code>a-sphere</code>, <code>a-plane</code> etc. Within the entity tags, the attributes define configuration for components. This configuration is enclosed in quotes and can contain multiple <strong>properties</strong> e.g.: <code>spin = &quot;axis: y; speed: 1.6</code>.</p>
 </div>
 </div>
 </div>
@@ -348,9 +312,7 @@ enclosed in quotes and can contain multiple <strong>properties</strong> e.g.: <c
 <h2><span class="header-section-number">5.4</span> Config Conventions</h2>
 <div id="coordinate-system" class="section level3">
 <h3><span class="header-section-number">5.4.1</span> Coordinate system</h3>
-<p>To fully comprehend the scene configuration you need to know the coordinate
-system. In VR, The standard unit is meters, which are scaled in VR space to
-look like meters in real space.</p>
+<p>To fully comprehend the scene configuration you need to know the coordinate system. In VR, The standard unit is meters, which are scaled in VR space to look like meters in real space.</p>
 <p>In the coordinate system X points “right”, Y points “up”, and Z points toward the camera. Like so:</p>
 <pre><code>          | Y + 
           | 
@@ -358,14 +320,11 @@ look like meters in real space.</p>
          / 
         / 
       Z +</code></pre>
-<p>This can be confusing when using spatial data since the spatial convention is
-typically to have Z pointing “up from the table” and Y pointing “up the page”</p>
+<p>This can be confusing when using spatial data since the spatial convention is typically to have Z pointing “up from the table” and Y pointing “up the page”</p>
 </div>
 <div id="vectors" class="section level3">
 <h3><span class="header-section-number">5.4.2</span> Vectors</h3>
-<p>Vectors of X,Y,Z are written as space delimited triples like so:
-* <code>position=&quot;-1 0.5 -4&quot;</code>
-* <code>rotation=&quot;-90 0 0&quot;</code></p>
+<p>Vectors of X,Y,Z are written as space delimited triples like so: * <code>position=&quot;-1 0.5 -4&quot;</code> * <code>rotation=&quot;-90 0 0&quot;</code></p>
 <p>In the case of rotation the each vector component specifies degrees rotation clockwise about an entity’s axis.</p>
 </div>
 <div id="applying-rotation" class="section level3 exercise">
@@ -380,15 +339,12 @@ typically to have Z pointing “up from the table” and Y pointing “up the pa
 </div>
 <div id="camera-position" class="section level3">
 <h3><span class="header-section-number">5.4.4</span> Camera Position</h3>
-<p>Unless otherwise specified the camera as placed at the origin, at a height of 1.6m, looking in the
-negative direction on the Z axis.</p>
-<p>Camera position and angle can be configured by adding an <code>a-camera</code> entity to
-the scene.</p>
+<p>Unless otherwise specified the camera as placed at the origin, at a height of 1.6m, looking in the negative direction on the Z axis.</p>
+<p>Camera position and angle can be configured by adding an <code>a-camera</code> entity to the scene.</p>
 </div>
 <div id="tweaking-a-scene" class="section level3 exercise">
 <h3><span class="header-section-number">5.4.5</span> Tweaking a scene</h3>
-<p>We’ll dive deeper into entity configuration soon, but for now let’s see what we
-can do intuitively based on what’s in front of us in the scene HTML. Make the following tweaks:</p>
+<p>We’ll dive deeper into entity configuration soon, but for now let’s see what we can do intuitively based on what’s in front of us in the scene HTML. Make the following tweaks:</p>
 <ol style="list-style-type: decimal">
 <li>Insert a new <code>a-camera</code> entity. Place it at the origin, at roughly your eye height by setting its <code>position</code>.</li>
 <li>Alter the yellow cylinder so that it is lying down on it’s side on the floor.</li>
@@ -399,14 +355,8 @@ can do intuitively based on what’s in front of us in the scene HTML. Make the 
 </div>
 <div id="entity-component-configuration" class="section level2">
 <h2><span class="header-section-number">5.5</span> Entity component configuration</h2>
-<p>An A-Frame scene is made up completely of entities that may reference assets. It
-the configuration we have seen so far it looks like entities have many types:
-‘box’, ‘sphere’, ‘cylinder’, ‘plane’ etc - But this is actually an illusion. The
-‘type’ or nature of all entities is completely determined by their components.
-But what are their components?!</p>
-<p>There a couple of ways to write entities and what we have seen so far was short
-hand to save typing. The shorthand is convenient but it can make seeing how the
-entity is composed from components less clear.</p>
+<p>An A-Frame scene is made up completely of entities that may reference assets. It the configuration we have seen so far it looks like entities have many types: ‘box’, ‘sphere’, ‘cylinder’, ‘plane’ etc - But this is actually an illusion. The ‘type’ or nature of all entities is completely determined by their components. But what are their components?!</p>
+<p>There a couple of ways to write entities and what we have seen so far was short hand to save typing. The shorthand is convenient but it can make seeing how the entity is composed from components less clear.</p>
 <p>Consider the yellow cylinder in it’s initial position and orientation:</p>
 <pre><code>&lt;a-cylinder position=&quot;1 0.75 -3&quot; radius=&quot;0.5&quot; height=&quot;1.5&quot; color=&quot;#FFC65D&quot; shadow&gt;&lt;/a-cylinder&gt;</code></pre>
 <p>That definition is a shorthand for this:</p>
@@ -414,8 +364,7 @@ entity is composed from components less clear.</p>
           geometry=&quot;primitive: cylinder; height: 1.5; radius: 0.5&quot; 
           material=&quot;color: #FFC65D&quot;
           shadow&gt;&lt;/a-entity&gt;</code></pre>
-<p>Where each component has been placed on a new line for emphasis. Now it is clear
-that the cylinder we see is an entity with four components:</p>
+<p>Where each component has been placed on a new line for emphasis. Now it is clear that the cylinder we see is an entity with four components:</p>
 <ul>
 <li>a position component that places it in spaces</li>
 <li>a geometry component that determines its shape</li>
@@ -423,21 +372,14 @@ that the cylinder we see is an entity with four components:</p>
 <li>a shadow component that lets the entity cast shadows and have shadows casted on it.</li>
 </ul>
 <p>Notice how component properties are configured as string of key value pairs, delimited by <code>:</code> and separated by <code>;</code>.</p>
-<p>We can consult the A-Frame documentation entry for <code>a-cylinder</code> to see how its
-attributes map to properties of the underlying components:
-<a href="https://aframe.io/docs/0.8.0/primitives/a-cylinder.html" class="uri">https://aframe.io/docs/0.8.0/primitives/a-cylinder.html</a></p>
+<p>We can consult the A-Frame documentation entry for <code>a-cylinder</code> to see how its attributes map to properties of the underlying components: <a href="https://aframe.io/docs/0.8.0/primitives/a-cylinder.html" class="uri">https://aframe.io/docs/0.8.0/primitives/a-cylinder.html</a></p>
 <div id="the-id" class="section level3">
 <h3><span class="header-section-number">5.5.1</span> The <code>id</code></h3>
-<p>One useful attribute that is not a component is <code>id</code>. It can be applied to any
-entity or asset as a means to refer to them in the configuration of other
-entities. In our example we referred to an asset with <code>id</code> ‘hadz’ in the <code>src</code>
-attribute of the box, to use the image as a texture. When referring to ids they
-are prefixed with a <code>#</code>, eg <code>#hadz</code>.</p>
+<p>One useful attribute that is not a component is <code>id</code>. It can be applied to any entity or asset as a means to refer to them in the configuration of other entities. In our example we referred to an asset with <code>id</code> ‘hadz’ in the <code>src</code> attribute of the box, to use the image as a texture. When referring to ids they are prefixed with a <code>#</code>, eg <code>#hadz</code>.</p>
 </div>
 <div id="switching-to-long-form" class="section level3 exercise">
 <h3><span class="header-section-number">5.5.2</span> Switching to long form</h3>
-<p>Still in the same demo scene, replace <code>a-box</code> with an <code>a-entity</code> that defines
-all components explicitly. To this you will need to know that:</p>
+<p>Still in the same demo scene, replace <code>a-box</code> with an <code>a-entity</code> that defines all components explicitly. To this you will need to know that:</p>
 <ul>
 <li>position is a component</li>
 <li>rotation is a component</li>
@@ -446,24 +388,15 @@ all components explicitly. To this you will need to know that:</p>
 <li>scale is a component</li>
 <li>src is NOT a component, it is an attribute.</li>
 </ul>
-<p>The A-Frame documentation entry for <code>a-box</code> may help:
-<a href="https://aframe.io/docs/0.8.0/primitives/a-box.html" class="uri">https://aframe.io/docs/0.8.0/primitives/a-box.html</a></p>
+<p>The A-Frame documentation entry for <code>a-box</code> may help: <a href="https://aframe.io/docs/0.8.0/primitives/a-box.html" class="uri">https://aframe.io/docs/0.8.0/primitives/a-box.html</a></p>
 </div>
 </div>
 <div id="a-frame-documentation" class="section level2">
 <h2><span class="header-section-number">5.6</span> A-Frame Documentation</h2>
-<p>We’ve mentioned the A-Frame documentation now a couple of times and it is worth
-quickly becoming familiar with how to navigate it, because it is an extensive
-and well put together resource. The documentation can be found at:</p>
+<p>We’ve mentioned the A-Frame documentation now a couple of times and it is worth quickly becoming familiar with how to navigate it, because it is an extensive and well put together resource. The documentation can be found at:</p>
 <p><a href="https://aframe.io/docs" class="uri">https://aframe.io/docs</a></p>
-<p>Now let’s use the documentation to fix a problem with our scene: If you walk
-around the back of the objects you will notice that the ‘backboard’ turns
-invisible. This is because by default A-Frame only renders the ‘front’ side of a
-3D model or geometry. For closed shapes this is fine, but for open shapes this disconcerting disappearing effect will occur.</p>
-<p>If we type ‘material’ into the search box in the top left of the docs website we
-will get a list of suggestions, choose the first one. If we look though the
-properties of the material component, we will find one that can address this
-issue: <code>side: double</code>.</p>
+<p>Now let’s use the documentation to fix a problem with our scene: If you walk around the back of the objects you will notice that the ‘backboard’ turns invisible. This is because by default A-Frame only renders the ‘front’ side of a 3D model or geometry. For closed shapes this is fine, but for open shapes this disconcerting disappearing effect will occur.</p>
+<p>If we type ‘material’ into the search box in the top left of the docs website we will get a list of suggestions, choose the first one. If we look though the properties of the material component, we will find one that can address this issue: <code>side: double</code>.</p>
 <p>The documentation also has some vignette style content through the ‘Guides’ link.</p>
 </div>
 <div id="lights-camera-actions-controls" class="section level2">
@@ -476,21 +409,16 @@ issue: <code>side: double</code>.</p>
 </ul>
 <div id="lighting" class="section level3">
 <h3><span class="header-section-number">5.7.1</span> Lighting</h3>
-<p>If no entities with light components are configured, the framework will
-automatically inject two lights: an ambient light source and a point light
-source.</p>
+<p>If no entities with light components are configured, the framework will automatically inject two lights: an ambient light source and a point light source.</p>
 <ul>
 <li>A point light source emits light outward in all directions. It can cast shadows.</li>
 <li>An ambient light source increases the brightness of all surfaces in the scene. It has no origin or direction and so cannot cast shadows.</li>
 </ul>
-<p>These two together make a reasonable approximation of an outdoor lighting model. The
-point source models the sun (or moon), and the ambient source models indirect
-light reflected light from various sources.</p>
+<p>These two together make a reasonable approximation of an outdoor lighting model. The point source models the sun (or moon), and the ambient source models indirect light reflected light from various sources.</p>
 </div>
 <div id="lighting-it-up" class="section level3 exercise">
 <h3><span class="header-section-number">5.7.2</span> Lighting it up</h3>
-<p>Here’s a little example to showcase how light sources combined create mood and a
-realistic look. We have a drab night-time scene with only ambient lighting at:</p>
+<p>Here’s a little example to showcase how light sources combined create mood and a realistic look. We have a drab night-time scene with only ambient lighting at:</p>
 <p><a href="https://glitch.com/edit/#!/giddy-taxi" class="uri">https://glitch.com/edit/#!/giddy-taxi</a></p>
 <ol style="list-style-type: decimal">
 <li>Open the link and click the ‘Remix to Edit’ button.</li>
@@ -511,15 +439,13 @@ realistic look. We have a drab night-time scene with only ambient lighting at:</
 <ul>
 <li>use a sphere with <code>radius</code> ‘2’.</li>
 <li>set the <code>color</code> to ‘white’.</li>
-<li>Add this config to the material component: <code>shader: flat</code> - This will stop
-it dimming with distance.</li>
+<li>Add this config to the material component: <code>shader: flat</code> - This will stop it dimming with distance.</li>
 </ul>
 <ol style="list-style-type: decimal">
 <li>Review your light intensity settings now you have a bright full Moon in the sky and set appropriately.</li>
 </ol>
 <p>The documentation entries for ‘light’ and ‘geometry &gt; sphere’ may assist you.</p>
-<p><strong>Bonus!</strong> For fun try animating the moon using a third party library. Here’s a
-template of the component config:</p>
+<p><strong>Bonus!</strong> For fun try animating the moon using a third party library. Here’s a template of the component config:</p>
 <pre><code>animation=&quot;property: position; to: &lt;END_POSITION&gt;; dir: alternate; loop: true; dur: &lt;ANIMATION_DURATION_ms&gt;&quot;
 </code></pre>
 </div>
@@ -530,14 +456,9 @@ template of the component config:</p>
 <p>It has two control components that allow inputs to rotate and move the camera:</p>
 <ul>
 <li><code>wasd-controls</code> listens for keyboard input and moves the camera accordingly</li>
-<li><code>look-controls</code> listens for movement from a phone or headset accelerometer, or
-a mouse. It can also respond to swipes on a touch screen as per a mouse.</li>
+<li><code>look-controls</code> listens for movement from a phone or headset accelerometer, or a mouse. It can also respond to swipes on a touch screen as per a mouse.</li>
 </ul>
-<p>Components for hand controllers are also attached to the camera entity for
-interactivity. The most general way to do interactivity is to have entities
-things that react to being looked at, this way even mobile users can interact
-with the scene. This can control is added with the <code>cursor</code> component. We’ll
-consider an example that does this later in the session.</p>
+<p>Components for hand controllers are also attached to the camera entity for interactivity. The most general way to do interactivity is to have entities things that react to being looked at, this way even mobile users can interact with the scene. This can control is added with the <code>cursor</code> component. We’ll consider an example that does this later in the session.</p>
 <p>Like other components, controls have properties that alter how they work.</p>
 </div>
 <div id="learn-to-fly" class="section level3 exercise">
@@ -551,9 +472,7 @@ consider an example that does this later in the session.</p>
 <li>move the camera twice as fast as the default</li>
 <li>allow the camera to ‘fly’, instead of being locked into a single plane.</li>
 </ul>
-<p>Notice how when moving fast clicking and dragging to turn becomes infeasible. It
-is possible to configure the mouse to control the camera ‘First Person Shooter’
-style with community components.</p>
+<p>Notice how when moving fast clicking and dragging to turn becomes infeasible. It is possible to configure the mouse to control the camera ‘First Person Shooter’ style with community components.</p>
 </div>
 </div>
 <div id="summary" class="section level2">
