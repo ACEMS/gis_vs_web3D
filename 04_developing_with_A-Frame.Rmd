@@ -9,8 +9,8 @@
 
 ## Overview
 
-* Teaching: X minutes
-* Exercises: X minutes
+* Teaching: 30 minutes
+* Exercises: 10 minutes
 
 ## A-Frame Dev Tools
 
@@ -80,7 +80,7 @@ positions, colours, and lighting.
 #### Duck Tales Pt. 2 {.exercise}
 
 1. Using the A-Frame inspector, discover where the Duck is in this scene. 
-1.Use the information about the duck in the `a-glf-model` to change the Duck's position, scale, and rotation such that it is perched on top of the yellow cylinder.
+1. Use the information about the duck in the `a-glf-model` to change the Duck's position, scale, and rotation such that it is perched on top of the yellow cylinder.
 
 One new thing you need to know to do this is that the `scale` component is
 configured with a vector of scale factors to apply along each axis of the entity

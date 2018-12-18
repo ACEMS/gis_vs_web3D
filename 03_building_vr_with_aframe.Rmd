@@ -7,8 +7,8 @@
 
 ## Overview
 
-* Teachin: X Min
-* Exercises: X Min
+* Teaching: 30 Min
+* Exercises: 20 Min
 
 ## Anatomy of an A-Frame Scene
 

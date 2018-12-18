@@ -8,8 +8,8 @@
 
 ## Overview
 
-Teaching: 30min
-Exercises: 5min
+* Teaching: 30min
+* Exercises: 5min
 
 ## Motivation
 
