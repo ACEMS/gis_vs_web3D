@@ -20,7 +20,7 @@ together.
 1. Open this link in your browser: https://glitch.com/edit/#!/pricey-kitten
 1. Click "Remix to Edit" to create a copy of the project in your Glitch account
 1. Click "Show Live" to see what the scene looks like.
-  - Explore the scene briefly. You can use the WASD or arrow keys to move and mouse to change the camera angle.
+    - Explore the scene briefly. You can use the WASD or arrow keys to move and mouse to change the camera angle.
 1. In the left hand file pane click "index.html" to open the app source.
 
 *What is glitch.com? Glitch is a social coding site that makes is easy to
